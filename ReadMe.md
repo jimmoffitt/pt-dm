@@ -42,5 +42,5 @@ This Ruby app is deployed on Windows using the Ocra gem:
 http://rubyonwindows.blogspot.com/2009/05/ocra-one-click-ruby-application-builder.html
 
 If you want to make code changes, you can re-create the Windows executable with these commands:
-\pt_dm\dm_process.rb --windows
-\pt_dm\dm_ui.rb --windows --no-autoload
+* \pt_dm\dm_process.rb --windows
+* \pt_dm\dm_ui.rb --windows --no-autoload
