@@ -1,7 +1,7 @@
 pt_dm
 =====
 
-**Download manager for Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
+**Download manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
 
 This application automates the downloading of Historical PowerTrack data files.  The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
 
