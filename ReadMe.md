@@ -1,7 +1,7 @@
 pt_dm
 =====
 
-**Download manager for Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
+**Download manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
 
 This application automates the downloading of Historical PowerTrack data files.  The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
 
@@ -42,5 +42,5 @@ This Ruby app is deployed on Windows using the Ocra gem:
 http://rubyonwindows.blogspot.com/2009/05/ocra-one-click-ruby-application-builder.html
 
 If you want to make code changes, you can re-create the Windows executable with these commands:
-\pt_dm\dm_process.rb --windows
-\pt_dm\dm_ui.rb --windows --no-autoload
+* \pt_dm\ocra dm_process.rb --windows
+* \pt_dm\ocra dm_ui.rb --windows --no-autoload
