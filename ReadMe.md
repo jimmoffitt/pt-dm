@@ -29,8 +29,8 @@ Since a design goal was to develop on the MacOS and deploy on Windows, a simple 
 **SSL certificate issues with Ruby on Windows**
 
 Some useful links about the Ruby/net::https/SSL issue:
-http://blog.kabisa.nl/2009/12/04/ruby-and-ssl-certificate-validation/
-http://notetoself.vrensk.com/2008/09/verified-https-in-ruby/
+* http://blog.kabisa.nl/2009/12/04/ruby-and-ssl-certificate-validation/
+* http://notetoself.vrensk.com/2008/09/verified-https-in-ruby/
 
 If you are getting SSL certificate errors, try removing the "cacert.pem" in the local directory.
 If that file is not found, this app will go out and create a fresh file from http://curl.haxx.se/ca/cacert.pem.
@@ -39,7 +39,8 @@ If that file is not found, this app will go out and create a fresh file from htt
 **Creating a Ruby executable on Windows**
 
 This Ruby app is deployed on Windows using the Ocra gem:
-http://rubyonwindows.blogspot.com/2009/05/ocra-one-click-ruby-application-builder.html
+* http://ocra.rubyforge.org/
+* http://rubyonwindows.blogspot.com/2009/05/ocra-one-click-ruby-application-builder.html
 
 If you want to make code changes, you can re-create the Windows executable with these commands:
 * \pt_dm\ocra dm_process.rb --windows
