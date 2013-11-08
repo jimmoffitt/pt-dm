@@ -1,4 +1,4 @@
-pt_dm
+pt-dm == PowerTrack Download Manager
 =====
 
 **Download manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
