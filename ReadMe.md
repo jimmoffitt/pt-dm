@@ -9,6 +9,7 @@ Setting up application:
 + Copy dm_process.exe and dm_ui.exe to a folder.
 + Run dm_ui.exe and enter your configuration:
   + Account name, username and password.
+  + Job Data URL (https://historical.gnip.com:443/../results.json) or just the Job UUID.
   + Output folder (defaults to ./output and is automatically created).
   + The configuration file is automatically created if needed.
 
