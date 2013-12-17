@@ -5,13 +5,17 @@ pt-dm == PowerTrack Download Manager
 
 This application automates the downloading of Historical PowerTrack data files.  The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
 
-Setting up application:
+Setting up application on Windows:
 + Copy dm_process.exe and dm_ui.exe to a folder.
 + Run dm_ui.exe and enter your configuration:
   + Account name, username and password.
   + Job Data URL (https://historical.gnip.com:443/../results.json) or just the Job UUID.
   + Output folder (defaults to ./output and is automatically created).
   + The configuration file is automatically created if needed.
+
+Setting up application on MacOS/Linux:
++ Application runs on top of Ruby interpreter.
++ dm_ui.rb is the "main" file to execute.  
 
 Downloading files:
 + Click the "Download Data" button.  
