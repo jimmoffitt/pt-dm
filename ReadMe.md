@@ -1,9 +1,20 @@
-pt-dm == PowerTrack Download Manager
+pt-dm == PowerTrack Data Manager
 =====
 
 **Download manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
 
-This application automates the downloading of Historical PowerTrack data files.  The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
+This application automates the downloading of Historical PowerTrack data files. Once those files are downloaded, this tool can convert JSON to CSV and consolidate 10-minute files to hourly or daily data files. 
+
+So, there are three main processes managed here, with corresponding classes encapsulating this functionality:
+
+    * HTTP Downloading and uncompressing Historical PowerTrack 10-minute JSON flatfiles.
+    * Converting JSON tweet payloads to CSV.  Requires a 'template tweet' to select fields for conversion.
+    * Consolidating 10-minute files into hourly or daily files.
+        * Works with either JSON and CSV formats.
+        * Can also produce a single CSV file, but tool needs to gatekeep requests that would produce silly-sized files.
+        * Designed to be flexible.  Can consolidate hourly files into daily files for example.
+
+The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
 
 Setting up application on Windows:
 + Copy dm_process.exe and dm_ui.exe to a folder.
@@ -31,6 +42,9 @@ The UI and worker objects/apps needed to communicate with each other.  The UI ne
 Since a design goal was to develop on the MacOS and deploy on Windows, a simple cross-process communication mechanism was needed.  As a first step it was designed to communicate via a simple YAML status file.  Both applications reference a common status class with methods for reading and writing the status file.
 
 
+**Development notes**
+
+
 **SSL certificate issues with Ruby on Windows**
 
 Some useful links about the Ruby/net::https/SSL issue:
@@ -50,3 +64,15 @@ This Ruby app is deployed on Windows using the Ocra gem:
 If you want to make code changes, you can re-create the Windows executable with these commands:
 * \pt_dm\ocra dm_process.rb --windows
 * \pt_dm\ocra dm_ui.rb --windows --no-autoload
+* 
+
+
+**JSON-to-CSV Conversion notes**
+
+We get asked about converting JSON data to CSV very frequently.  This is a very common request for one-time consumers of social data.  A typical scenario is someone conducting research and exploring signals from their domain in social media data.  [tweeting-in-the-rain example]
+
+JSON formatting is dynamic in nature because it readily supports hashes and arrays of variable length. 
+
+The process of converting tweets from JSON to CSV was much more complicated than anticipated. 
+
+
