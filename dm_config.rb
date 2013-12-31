@@ -2,7 +2,7 @@
 #This class is tied to the Download Manager UI and process objects...
 require 'base64'
 require 'yaml'
-require "fileutils"
+require 'fileutils'
 
 class DM_Config
 
@@ -18,22 +18,64 @@ class DM_Config
         :consolidate_dir,
         :uncompress_data,
         :convert_csv,
-        :data_span
+        :activity_template,  #Template for conversion process.
+        :data_span,
+
+        :arrays_to_collapse,
+        :header_overrides
 
     def initialize
         #Defaults.
-        @config_path = "./" #Default to app root directory.
+        @config_path = './' #Default to app root directory.
+        @config_name = 'config.yaml'
 
-        @publisher = "twitter"
-        @product = "historical"
-        @stream_type = "track"
-        @data_dir = "./output"
-        #TODO: these are not implemented yet.
-        @consolidate_dir = "./consolidate"
+        @publisher = 'twitter'
+        @product = 'historical'
+        @stream_type = 'track'
+        @data_dir = './output'
+
+        @consolidate_dir = './consolidate'
         @uncompress_data = false
         @convert_csv = false
-        @data_span = "day"
+        @activity_template = './tweet_template.json'
+        @data_span = 'hour'
+
+        #These need to be unique, thus 'urls' require their parent object name.
+        @arrays_to_collapse = 'hashtags,user_mentions,twitter_entities.urls,gnip.urls,matching_rules,topics'
+        @header_overrides = 'actor.location.objectType,actor.location.displayName'
+        @header_mappings = generate_special_header_mappings
+
     end
+
+    #twitter_entities.hashtags.0.text               --> hashtags
+    #twitter_entities.urls.0.url                    --> twitter_urls
+    #twitter_entities.urls.0.expanded_url           --> twitter_expanded_urls
+    #twitter_entities.urls.0.display_url            --> twitter_display_urls
+    #twitter_entities.user_mentions.0.screen_name   --> user_mention_screen_names
+    #twitter_entities.user_mentions.0.name          --> user_mention_names
+    #twitter_entities.user_mentions.0.id            --> user_mention_ids
+    #gnip.matching_rules.0.value                    --> rule_values
+    #gnip.matching_rules.0.tag                      --> tag_values
+
+    def generate_special_header_mappings
+
+        mappings = Hash.new
+
+        mappings['twitter_entities.hashtags.0.text'] = 'hashtags'
+        mappings['twitter_entities.urls.0.url'] = 'twitter_urls'
+        mappings['twitter_entities.urls.0.expanded_url'] = 'twitter_expanded_urls'
+        mappings['twitter_entities.urls.0.display_url'] = 'twitter_display_urls'
+        mappings['twitter_entities.user_mentions.0.screen_name'] = 'user_mention_screen_names'
+        mappings['twitter_entities.user_mentions.0.name'] = 'user_mention_names'
+        mappings['twitter_entities.user_mentions.0.id'] = 'user_mention_ids'
+        mappings['gnip.matching_rules.0.value'] = 'rule_values'
+        mappings['gnip.matching_rules.0.tag'] = 'tag_values'
+
+        mappings
+    end
+
+
+
 
     #Confirm a directory exists, creating it if necessary.
     def check_directory(directory)
@@ -47,7 +89,7 @@ class DM_Config
     #Determine @job_uuid from @job_info.
     def set_uuid
         begin
-            if @job_info.include?("historical.gnip.com") #then Data URL was entered
+            if @job_info.include?('historical.gnip.com') #then Data URL was entered
                 @job_uuid = @job_info.split("/")[-2]
             else
                 @job_uuid = @job_info
@@ -77,34 +119,35 @@ class DM_Config
     def save_config_yaml
 
         account = {}
-        account["account_name"] = @account_name
-        account["user_name"] = @user_name
-        account["password"] = @password
+        account['account_name'] = @account_name
+        account['user_name'] = @user_name
+        account['password'] = @password
 
         settings = {}
-        settings["data_dir"] = @data_dir
-        settings["job_info"] = @job_info
-
-        not_implemented = {}
-        not_implemented["uncompressed_data"] = @uncompress_data
-        not_implemented["consolidate_dir"] = @consolidate_dir
-        not_implemented["data_span"] = @data_span
-        not_implemented["convert_csv"] = @convert_csv
+        #Downloading, compression.
+        settings['data_dir'] = @data_dir
+        settings['job_info'] = @job_info
+        settings['uncompress_data'] = @uncompress_data
+        #Convert.
+        settings['convert_csv'] = @convert_csv
+        settings['activity_template'] = @activity_template
+        #Consolidate.
+        settings['consolidate_dir'] = @consolidate_dir
+        settings['data_span'] = @data_span
+        settings['arrays_to_collapse'] = @arrays_to_collapse
+        settings['header_overrides'] = @header_overrides
 
         config = {}
-        config["account"] = account
-        config["settings"] = settings
-        config["not_implemented"] = not_implemented
+        config['account'] = account
+        config['settings'] = settings
 
         File.open(config_file, 'w') do |f|
             f.write config.to_yaml
         end
-
     end
 
     #Open YAML file and load settings into config object.
     def get_config_yaml
-
 
         begin
             config = YAML::load_file(config_file)
@@ -113,9 +156,9 @@ class DM_Config
             config = YAML::load_file(config_file)
         end
 
-        @account_name = config["account"]["account_name"]
-        @user_name = config["account"]["user_name"]
-        @password = config["account"]["password"]
+        @account_name = config['account']['account_name']
+        @user_name = config['account']['user_name']
+        @password = config['account']['password']
 
         if !password_encoded?(@password)
             begin
@@ -127,19 +170,61 @@ class DM_Config
             save_config_yaml
         end
 
-        @job_info = config["settings"]["job_info"]
+        @job_info = config['settings']['job_info']
         set_uuid
-        @data_dir = check_directory(config["settings"]["data_dir"])
+        @data_dir = check_directory(config['settings']['data_dir'])
+        @uncompress_data = config['settings']['uncompress_data']
+        #Convert.
+        @convert_csv = config['settings']['convert_csv']
+        @activity_template = config['settings']['activity_template']
+        #Consolidate.
+        @consolidate_dir = config['settings']['consolidate_dir']
+        @data_span = config['settings']['data_span']
 
-        #These are not implemented yet!
-        @uncompress_data = config["not_implemented"]["uncompressed_data"]
-        @consolidate_dir = config["not_implemented"]["consolidate_dir"]
-        @convert_csv = config["not_implemented"]["convert_csv"]
-        @data_span = config["not_implemented"]["data_span"]
+        temp = config['settings']['arrays_to_collapse']
+        if !temp.nil? then
+            @arrays_to_collapse = temp
+        end
+        temp = config['settings']['header_overrides']
+        if !temp.nil? then
+            @header_overrides = temp
+        end
 
     end
 
 
+end
+
+#--------------------------------------------------------------------------
+if __FILE__ == $0  #This script code is executed when running this file.
+
+    oConfig = DM_Config.new
+
+    #Account-specific.
+    oConfig.account_name = "AccountName"
+    oConfig.user_name = "me@there.com"
+    oConfig.password = "GotMeSomeData"
+
+    p oConfig.password_encoded?(oConfig.password)
+
+    temp = Base64.encode64(oConfig.password)
+    p temp
+    p oConfig.password_encoded?(temp)
+    temp2 = Base64.encode64(temp)
+    p temp2
+    temp3 = Base64.decode64(temp2)
+    p temp3
+    temp4  = Base64.decode64(temp3)
+    p temp4
+
+    #Historical PT Job details:
+    job_info = ""
+
+end
+
+
+#Similar code that uses binary (via Marshall) to save config.
+=begin
     #Uses Ruby Marshall to pack config file.
     def save_config_byte
 
@@ -191,47 +276,6 @@ class DM_Config
             p "No configuration file to load..."
         end
     end
-end
-
-#--------------------------------------------------------------------------
-if __FILE__ == $0  #This script code is executed when running this file.
-
-    oConfig = DM_Config.new
-
-    #Account-specific.
-    oConfig.account_name = "jim"
-    oConfig.user_name = "jmoffitt@gnipcentral.com"
-    oConfig.password = "test_password"
-
-    p oConfig.password_encoded?(oConfig.password)
-
-
-    temp = Base64.encode64(oConfig.password)
-
-    p temp
-
-    p oConfig.password_encoded?(temp)
-
-    temp2 = Base64.encode64(temp)
-
-    p temp2
-
-    temp3 = Base64.decode64(temp2)
-
-    p temp3
-
-    temp4  = Base64.decode64(temp3)
-
-    p temp4
-
-
-
-
-
-
-    #Historical PT Job details:
-    job_info = ""
-
-end
+=end
 
 
