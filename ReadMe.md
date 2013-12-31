@@ -1,7 +1,7 @@
 pt-dm == PowerTrack Data Manager
 =====
 
-**Download manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
+**Data manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
 
 This application automates the downloading of Historical PowerTrack data files. Once those files are downloaded, this tool can convert JSON to CSV and consolidate 10-minute files to hourly or daily data files. 
 
@@ -74,5 +74,33 @@ We get asked about converting JSON data to CSV very frequently.  This is a very 
 JSON formatting is dynamic in nature because it readily supports hashes and arrays of variable length. 
 
 The process of converting tweets from JSON to CSV was much more complicated than anticipated. 
+
+*Nominating JSON arrays for 'special' flattening*
+
+config@arrays_to_collapse = 'hashtags,user_mentions,twitter_entities.urls,gnip.urls,matching_rules,topics'
+
+
+
+*Supporting 'special' header mappings*
+
+Default behavior is to use the dot-notation key by default, but some keys get silly-long:
+
+    #twitter_entities.hashtags.0.text               --> hashtags
+    #twitter_entities.urls.0.url                    --> twitter_urls
+    #twitter_entities.urls.0.expanded_url           --> twitter_expanded_urls
+    #twitter_entities.urls.0.display_url            --> twitter_display_urls
+    #twitter_entities.user_mentions.0.screen_name   --> user_mention_screen_names
+    #twitter_entities.user_mentions.0.name          --> user_mention_names
+    #twitter_entities.user_mentions.0.id            --> user_mention_ids
+    #gnip.matching_rules.0.value                    --> rule_values
+    #gnip.matching_rules.0.tag                      --> tag_values
+    
+The above represent the current defaults that are automatically generated. These can be updated in the (YAML) config file.
+
+These are specified at config@header_mappings.
+
+
+
+
 
 
