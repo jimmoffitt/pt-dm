@@ -3,10 +3,25 @@ require 'yaml'
 class DM_Status
 
     attr_accessor :status_name, :status_path,
+
+        #Process modes. UI sets to true to trigger a process.
+        # Process sets to false when done.
         :enabled,
+        :download,
+        :convert,
+        :consolidate,
+
         :job_uuid,
+        #Files downloaded stats --> Progress bar.
         :files_total,
         :files_local,
+        :file_size_mb,
+        :files_consolidated,
+
+        #File conversion stats --> Progress bar.
+        :activities_total,
+        :activities_converted,
+
         :file_current,
         :status,
         :error
@@ -28,13 +43,29 @@ class DM_Status
     def save_status
 
         status_hash = {}
-        status_hash["enabled"] = @enabled
         status_hash["job_uuid"] = @job_uuid
+        #Download stats.
         status_hash["files_total"] = @files_total
         status_hash["files_local"] = @files_local
+        status_hash["files_size_mb"] = @file_size_mb
+
+        #Conversion stats.
+        status_hash["activities_total"] = @activities_total
+        status_hash["activities_converted"] = @activities_converted
+
+        #Consolidation stats
+        status_hash["files_consolidated"] = @files_consolidated
+
+        #General details.
         status_hash["file_current"] = @file_current
         status_hash["status"] = @status
         status_hash["error"] = @error
+
+        #Process modes.
+        status_hash["enabled"] = @enabled
+        status_hash["download"] = @download
+        status_hash["convert"] = @convert
+        status_hash["consolidate"] = @consolidate
 
         File.open(status_file, 'w') do |f|  #This should NEVER append.
             f.write status_hash.to_yaml
@@ -52,13 +83,28 @@ class DM_Status
             status_hash = YAML::load_file(status_file)
         end
 
-        @enabled = status_hash["enabled"]
         @job_uuid = status_hash["job_uuid"]
+
         @files_total = status_hash["files_total"]
         @files_local = status_hash["files_local"]
+        @file_size_mb = status_hash["files_size_mb"]
+
+        #Conversion stats.
+        @activities_total = status_hash["activities_total"]
+        @activities_converted = status_hash["activities_converted"]
+
+        #Consolidation stats.
+        @file_consolidated = status_hash["files_consolidated"]
+
         @file_current = status_hash["file_current"]
         @status = status_hash["status"]
         @error = status_hash["error"]
+
+        #Process modes.
+        @enabled = status_hash["enabled"]
+        @download = status_hash["download"]
+        @convert = status_hash["convert"]
+        @consolidate = status_hash["consolidate"]
     end
 end
 
