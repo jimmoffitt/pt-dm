@@ -1,0 +1,43 @@
+{
+ "twitter_entities": {
+    "hashtags": [
+      {
+        "text": "HashTag1"
+      },
+      {
+        "text": "HashTag2"
+      },
+      {
+        "text": "HashTag3"
+      },
+      {
+        "text": "HashTag4"
+      }
+    ],
+    "symbols": [
+      
+    ],
+    "user_mentions": [
+      {
+        "screen_name": "ScreenName1",
+        "name": "Real Name 1",
+        "id": 751491714
+      },
+      {
+        "screen_name": "ScreenName2",
+        "name": "Real Name 2",
+        "id": 751491714
+      },
+      {
+        "screen_name": "ScreenName3",
+        "name": "Real Name 3",
+        "id": 751491714
+      },
+      {
+        "screen_name": "ScreenName4",
+        "name": "Real Name 4",
+        "id": 1074217890
+      }
+    ]
+  }
+}

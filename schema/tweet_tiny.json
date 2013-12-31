@@ -1,0 +1,36 @@
+{
+  "id": "tag:search.twitter.com,2005:399027463118139392",
+  "objectType": "activity",
+  "actor": {
+    "id": "id:twitter.com:500305822",
+     "preferredUsername": "MarkGauvreau",
+     "location": {
+      "objectType": "place",
+      "displayName": "Milton,Ontario Canada"
+    }
+  },
+  "verb": "post",
+  "postedTime": "2013-11-09T04:15:35.000Z",
+  "body": "First Rum And Coke At Rad Brothers ",
+  "object": {
+    "id": "object:search.twitter.com,2005:399027463118139392"
+  },
+  "gnip": {
+    "matching_rules": [
+      {
+        "value": "has:geo has:profile_geo has:media has:links has:lang has:mentions has:hashtags",
+        "tag": "test"
+      }
+    ],
+    "profileLocations": [
+      {
+        "address": {
+          "country": "Canada",
+          "countryCode": "CA",
+          "locality": "Milton",
+          "region": "Ontario"
+        } 
+      }
+    ]
+  }
+}
