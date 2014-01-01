@@ -3,7 +3,7 @@ pt-dm == PowerTrack Data Manager
 
 **Data manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
 
-This application automates the downloading of Historical PowerTrack data files. Once those files are downloaded, this tool can convert JSON to CSV and consolidate 10-minute files to hourly or daily data files. 
+This application automates the downloading of Historical PowerTrack data files. Once those files are downloaded, this tool can convert tweets from JSON to CSV and consolidate 10-minute files into hourly or daily data files. 
 
 So, there are three main processes managed here, with corresponding classes encapsulating this functionality:
 
