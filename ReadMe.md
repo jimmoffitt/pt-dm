@@ -3,7 +3,7 @@ pt-dm == PowerTrack Data Manager
 
 **Data manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
 
-This application automates the downloading of Historical PowerTrack data files. Once those files are downloaded, this tool can convert JSON to CSV and consolidate 10-minute files to hourly or daily data files. 
+This application automates the downloading of Historical PowerTrack data files. Once those files are downloaded, this tool can convert tweets from JSON to CSV and consolidate 10-minute files into hourly or daily data files. 
 
 So, there are three main processes managed here, with corresponding classes encapsulating this functionality:
 
@@ -14,7 +14,7 @@ So, there are three main processes managed here, with corresponding classes enca
         * Can also produce a single CSV file, but tool needs to gatekeep requests that would produce silly-sized files.
         * Designed to be flexible.  Can consolidate hourly files into daily files for example.
 
-The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
+The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download, conversion, and consolidation options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
 
 Setting up application on Windows:
 + Copy dm_process.exe and dm_ui.exe to a folder.
