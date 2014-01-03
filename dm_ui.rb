@@ -253,7 +253,6 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #If so, we would want to remove the following initialization.
     initialize_status(oStatus)
 
-
     #============================================================================
     # Bye-bye Clean Code... entering the Tk Zone.
     #Create Tk variables. Each one maps a UI control to a config setting.
@@ -298,126 +297,95 @@ if __FILE__ == $0  #This script code is executed when running this file.
     content = Tk::Tile::Frame.new(root) {padding '3 3 12 12'}
 
     #------------------------------------------------------------
-    #Account Download frame.
+    #Account details.
     #------------------------------------------------------------
-    account = Tk::Tile::Frame.new(content) {padding '3 3 12 12'; borderwidth 4; relief 'sunken'}.grid( :sticky => 'nsew')
-    account.grid :column=>0, :row=>0#, :columnspan => 9, :rowspan => 1
 
-    current_row = -1
-    current_row = current_row + 1
-    #Account
-    Tk::Tile::Label.new(account) {text 'Account'}.grid( :column => 0, :row => current_row, :sticky => 'e')
-    Tk::Tile::Entry.new(account) {width 30; textvariable $UI_account_name}.grid( :column => 1, :columnspan => 2, :row => current_row, :sticky => 'we' )
+    lbl_account = Tk::Tile::Label.new(content) {text 'Account'}
+    txt_account = Tk::Tile::Entry.new(content) {width 25; textvariable $UI_account_name}
     #Username
-    Tk::Tile::Label.new(account) {text 'Username'}.grid( :column => 3, :row => current_row, :sticky => 'e')
-    Tk::Tile::Entry.new(account) {width 40; textvariable $UI_user_name}.grid( :column => 4,  :columnspan => 2, :row => current_row, :sticky => 'we' )
+    lbl_username = Tk::Tile::Label.new(content) {text 'Username'}
+    txt_username = Tk::Tile::Entry.new(content) {width 35; textvariable $UI_user_name}
     #Password
-    Tk::Tile::Label.new(account) {text 'Password'}.grid( :column => 6, :row => current_row, :sticky => 'e')
-    Tk::Tile::Entry.new(account) {width 30; textvariable $UI_password; show "*"}.grid( :column => 7,  :columnspan => 2, :row => current_row, :sticky => 'we' )
+    lbl_password = Tk::Tile::Label.new(content) {text 'Password'}
+    txt_password = Tk::Tile::Entry.new(content) {width 25; textvariable $UI_password; show "*"}
+
 
     #------------------------------------------------------------
-    #Format Download frame.
+    #Download details.
     #------------------------------------------------------------
-
-    download = Tk::Tile::Frame.new(content) {padding '3 3 12 12'; borderwidth 4; relief 'sunken'}.grid( :sticky => 'nsew')
-    download.grid :column=>0, :row=>2#, :columnspan => 9, :rowspan => 4
-
-    current_row = current_row + 1
     #Long textbox for Data URL.  Also supports entry of job UUID.
-    Tk::Tile::Label.new(download) {text 'Job UUID or Data URL'}.grid( :column => 0, :row => current_row, :sticky => 'e')
-    Tk::Tile::Entry.new(download) {width 90; textvariable $UI_job_info}.grid( :column => 1, :columnspan => 8, :row => current_row, :sticky => 'we' )
+    lbl_uuid = Tk::Tile::Label.new(content) {text 'Job UUID or Data URL'}
+    txt_uuid = Tk::Tile::Entry.new(content) {width 90; textvariable $UI_job_info}
 
-    current_row = current_row + 1
     #Data folder widgets. Label, TextBox, and Button that activates the ChooseDir standard dialog.
-    Tk::Tile::Label.new(download) {text 'Data Directory'}.grid( :column => 0, :row => current_row, :sticky => 'e')
-    Tk::Tile::Entry.new(download) {width 15; textvariable $UI_data_dir}.grid( :column => 1, :columnspan => 8, :row => current_row, :sticky => 'we' )
-    Tk::Tile::Button.new(download) {text 'Select Dir'; width 15; command {$UI_data_dir.value=select_data_dir(oConfig)}}.grid( :column => 8, :row => current_row, :sticky => 'e')
+    lbl_data_dir = Tk::Tile::Label.new(content) {text 'Data Directory'}
+    txt_data_dir = Tk::Tile::Entry.new(content) {width 15; textvariable $UI_data_dir}
+    btn_data_dir = Tk::Tile::Button.new(content) {text 'Select Dir'; width 15; command {$UI_data_dir.value=select_data_dir(oConfig)}}
 
-    current_row = current_row + 1
     #Uncompress data?
-    Tk::Tile::CheckButton.new(download) {text 'Uncompress data files'; variable $UI_uncompress_data; set_value $UI_uncompress_data.to_s; }.grid( :column => 1, :row => current_row, :sticky => 'w')
+    chk_uncompress = Tk::Tile::CheckButton.new(content) {text 'Uncompress data files'; variable $UI_uncompress_data; set_value $UI_uncompress_data.to_s; }
     #Do it now?
-    Tk::Tile::Button.new(download) {text ' '; width 3; command {uncompress_files(oConfig)}}.grid( :column => 2, :row => current_row, :sticky => 'w')
-    $btn_download = Tk::Tile::Button.new(download) {text 'Download Files'; width 15; command {toggle_download(oStatus)}}.grid( :column => 8, :row => current_row, :sticky => 'e')
+    btn_uncompress = Tk::Tile::Button.new(content) {text ' '; width 3; command {uncompress_files(oConfig)}}
+    $btn_download = Tk::Tile::Button.new(content) {text 'Download Files'; width 15; command {toggle_download(oStatus)}}
 
     #Download Progress Bar details.
-    current_row = current_row + 1
-    Tk::Tile::Label.new(download) {text '   '}.grid( :column => 0, :row => current_row, :sticky => 'w')
-    progress_bar_download = Tk::Tile::Progressbar.new(download) {orient 'horizontal'; }.grid( :column => 1, :columnspan =>8, :row => current_row, :sticky => 'we')
+    progress_bar_download = Tk::Tile::Progressbar.new(content) {orient 'horizontal'; }
     progress_bar_download.maximum = 100
     progress_bar_download.variable = UI_progress_bar_download
 
-    current_row = current_row + 1
-    $status_label = Tk::Tile::Label.new(download) {text 'Status:'}.grid( :column => 1, :row => current_row, :columnspan => 3, :sticky => 'w')
+    $status_label = Tk::Tile::Label.new(content) {text 'Status:'}
 
 
     #------------------------------------------------------------
-    #Format Conversion frame.
+    #Conversion details.
     #------------------------------------------------------------
 
-    conversion = Tk::Tile::Frame.new(content) {padding '3 3 12 12'; borderwidth 4; relief 'sunken'}.grid( :sticky => 'nsew')
-    conversion.grid :column=>0, :row=>9#, :columnspan => 9, :rowspan => 4
     #Data conversion widgets.
-    current_row = current_row + 1
     #Convert to CSV?
-    Tk::Tile::CheckButton.new(conversion) {text 'Convert from JSON to CSV   '; variable $UI_convert_csv; set_value $UI_convert_csv.to_s; }.grid( :column => 0, :row => current_row, :sticky => 'w')
-
-
-    #Conversion Progress Bar details.
-    #current_row = current_row + 1
-    progress_bar_convert = Tk::Tile::Progressbar.new(conversion) {orient 'horizontal'; }.grid( :column => 3, :columnspan =>6, :row => current_row, :sticky => 'e')
-    progress_bar_convert.maximum = 100
-    progress_bar_convert.variable = UI_progress_bar_convert
-    $btn_convert = Tk::Tile::Button.new(conversion) {text 'Convert'; width 15; command {toggle_convert(oStatus)}}.grid( :column => 9, :row => current_row, :sticky => 'e')
+    chk_convert = Tk::Tile::CheckButton.new(content) {text 'Convert from JSON to CSV   '; variable $UI_convert_csv; set_value $UI_convert_csv.to_s; }
+    $btn_convert = Tk::Tile::Button.new(content) {text 'Convert'; width 15; command {toggle_convert(oStatus)}}
 
     #Conversion Template file.
-    current_row = current_row + 1
     #Data folder widgets. Label, TextBox, and Button that activates the ChooseDir standard dialog.
-    Tk::Tile::Label.new(conversion) {text 'JSON Template File'}.grid( :column => 0, :row => current_row, :sticky => 'e')
-    Tk::Tile::Entry.new(conversion) {width 15; textvariable $UI_activity_template}.grid( :column => 1, :columnspan => 7, :row => current_row, :sticky => 'we' )
-    Tk::Tile::Button.new(conversion) {text 'Select File'; width 15; command {$UI_activity_template.value=select_activity_template(oConfig)}}.grid( :column => 9, :row => current_row, :sticky => 'e')
-    current_row = current_row + 1
-    $btn_experiment = Tk::Tile::Button.new(conversion) {text 'Test Conversion'; width 15; command {convert_experiment}}.grid( :column => 9, :row => current_row, :sticky => 'e')
+    lbl_template = Tk::Tile::Label.new(content) {text 'JSON Template File'}
+    txt_template = Tk::Tile::Entry.new(content) {width 15; textvariable $UI_activity_template}
+    btn_template = Tk::Tile::Button.new(content) {text 'Select File'; width 15; command {$UI_activity_template.value=select_activity_template(oConfig)}}
+    #$btn_experiment = Tk::Tile::Button.new(content) {text 'Test Conversion'; width 15; command {convert_experiment}}
+
+    #Conversion Progress Bar details.
+    progress_bar_convert = Tk::Tile::Progressbar.new(content) {orient 'horizontal'; }
+    progress_bar_convert.maximum = 100
+    progress_bar_convert.variable = UI_progress_bar_convert
 
 
     #------------------------------------------------------------
     #Consolidation frame.
     #------------------------------------------------------------
 
-    consolidation = Tk::Tile::Frame.new(content) {padding '3 3 12 12'; borderwidth 4; relief 'sunken'}.grid( :sticky => 'nsew')
-    consolidation.grid :column=>0, :row=>13#, :columnspan => 9, :rowspan => 3
-
     #Consoliation output folder... TODO: Needed?  Just use temp folder?
-    #current_row = current_row + 1
     #Data Aggregation Output Folder.
-    #Tk::Tile::Label.new(consolidation) {text 'Data Consolidation Directory'}.grid( :column => 0, :row => current_row, :sticky => 'e')
-    #Tk::Tile::Entry.new(consolidation) {width 84; textvariable $UI_consolidate_dir}.grid( :column => 1, :row => current_row, :columnspan => 9, :sticky => 'we' )
-    #Tk::Tile::Label.new(consolidation) {text '        '}.grid( :column => 4, :row => current_row, :sticky => 'e')    #Empty label as a spacer...
-    #Tk::Tile::Button.new(consolidation) {text 'Select Dir'; width 15; command {$UI_consolidate_dir.value = select_consolidate_dir(oConfig)};state "disabled"}.grid( :column => 10, :row => current_row, :sticky => 'e')
+    #Tk::Tile::Label.new(consolidation) {text 'Data Consolidation Directory'}
+    #Tk::Tile::Entry.new(consolidation) {width 84; textvariable $UI_consolidate_dir}
+    #Tk::Tile::Label.new(consolidation) {text '        '}
+    #Tk::Tile::Button.new(consolidation) {text 'Select Dir'; width 15; command {$UI_consolidate_dir.value = select_consolidate_dir(oConfig)};state "disabled"}
 
-    current_row = current_row + 1
-    Tk::Tile::Label.new(consolidation) {text 'Data Consolidation'}.grid( :column => 0, :row => current_row, :sticky => 'e')
-    Tk::Tile::RadioButton.new(consolidation) {text 'None'; variable $UI_data_span; value 0}.grid( :column => 3, :row => current_row, :sticky => 'w')
-    Tk::Tile::RadioButton.new(consolidation) {text '1-hour'; variable $UI_data_span; value 1}.grid( :column => 4, :row => current_row, :sticky => 'w')
-    Tk::Tile::RadioButton.new(consolidation) {text '1-day'; variable $UI_data_span; value 2}.grid( :column => 5, :row => current_row, :sticky => 'w')
-    Tk::Tile::RadioButton.new(consolidation) {text 'Single File'; variable $UI_data_span; value 3; }.grid( :column => 6, :row => current_row, :sticky => 'w')
+    lbl_consolidate = Tk::Tile::Label.new(content) {text 'Data Consolidation'}
+    rd_data_span_0 = Tk::Tile::RadioButton.new(content) {text 'None'; variable $UI_data_span; value 0}
+    rd_data_span_1 = Tk::Tile::RadioButton.new(content) {text '1-hour'; variable $UI_data_span; value 1}
+    rd_data_span_2 = Tk::Tile::RadioButton.new(content) {text '1-day'; variable $UI_data_span; value 2}
+    rd_data_span_3 = Tk::Tile::RadioButton.new(content) {text 'Single File'; variable $UI_data_span; value 3; }
+    $btn_consolidate = Tk::Tile::Button.new(content) {text 'Consolidate '; width 15; command {toggle_consolidate(oStatus,oConfig)}}
 
     #Consolidation Progress Bar details.
-    #current_row = current_row + 1
-    progress_bar_consolidate = Tk::Tile::Progressbar.new(consolidation) {orient 'horizontal'; }.grid( :column => 7, :columnspan =>3, :row => current_row, :sticky => 'e')
+    progress_bar_consolidate = Tk::Tile::Progressbar.new(content) {orient 'horizontal'; }
     progress_bar_consolidate.maximum = 100
     progress_bar_consolidate.variable = UI_progress_bar_consolidate
 
-    $btn_consolidate = Tk::Tile::Button.new(consolidation) {text 'Consolidate '; width 15; command {toggle_consolidate(oStatus,oConfig)}}.grid( :column => 11, :row => current_row, :sticky => 'e')
 
     #-----------------------------------------
-    app_buttons = Tk::Tile::Frame.new(content) {padding '3 3 12 12'; borderwidth 4; relief 'sunken'}.grid( :sticky => 'nsew')
-    app_buttons.grid :column=>0, :row=>16#, :columnspan => 9, :rowspan => 1
-    current_row = current_row + 1
-    Tk::Tile::Button.new(app_buttons) {text 'Save Settings'; width 15; command {save_config(oConfig,oStatus)}}.grid( :column => 1, :row => current_row, :sticky => 'w')
-    Tk::Tile::Button.new(app_buttons) {text 'Exit'; width 15; command {exit_app(oStatus)}}.grid( :column => 4, :row => current_row, :sticky => 'w')
-    $btn_process = Tk::Tile::Button.new(app_buttons) {text 'Process Data'; width 15; command {toggle_process(oStatus)}}.grid( :column => 10, :row => current_row, :sticky => 'e')
-
+    btn_save = Tk::Tile::Button.new(content) {text 'Save Settings'; width 15; command {save_config(oConfig,oStatus)}}
+    btn_exit = Tk::Tile::Button.new(content) {text 'Exit'; width 15; command {exit_app(oStatus)}}
+    $btn_process = Tk::Tile::Button.new(content) {text 'Process Data'; width 15; command {toggle_process(oStatus)}}
 
 
     #-----------------------------------------
@@ -426,15 +394,101 @@ if __FILE__ == $0  #This script code is executed when running this file.
     if $os == :windows then
         #TODO: these need to be tweaked during next round of Windows testing.
         progress_bar_download.length = 770
-        progress_bar_convert.length = 530
-        progress_bar_consolidate.length = 370
+        progress_bar_convert.length = 770
+        progress_bar_consolidate.length = 770
     else
         progress_bar_download.length = 900
-        progress_bar_convert.length = 600
-        progress_bar_consolidate.length = 500
+        progress_bar_convert.length = 900
+        progress_bar_consolidate.length = 900
     end
 
     content.grid :column => 0, :row => 0, :sticky => 'nsew'
+
+    current_row = -1
+    current_row = current_row + 1
+
+    #Set up grid positions
+    lbl_account.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
+    txt_account.grid :row => current_row, :column => 3, :columnspan => 2, :sticky => 'we'
+    lbl_username.grid :row => current_row, :column => 5, :columnspan => 2, :sticky => 'e'
+    txt_username.grid :row => current_row, :column => 7, :columnspan => 2
+    lbl_password.grid :row => current_row, :column => 9, :columnspan => 2, :sticky => 'e'
+    txt_password.grid :row => current_row, :column => 11, :columnspan => 2
+
+    #---------------------------------------------
+    current_row = current_row + 1
+    lbl_space_1 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
+    sep_1 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+
+    current_row = current_row + 1
+    lbl_uuid.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
+    txt_uuid.grid :row => current_row, :column => 3, :columnspan => 9, :sticky => 'we'
+
+    current_row = current_row + 1
+    lbl_data_dir.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
+    txt_data_dir.grid :row => current_row, :column => 3, :columnspan => 8, :sticky => 'we'
+    btn_data_dir.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+
+    current_row = current_row + 1
+    chk_uncompress.grid :row => current_row, :column => 3, :columnspan => 1
+    btn_uncompress.grid :row => current_row, :column => 4, :columnspan => 1
+    $btn_download.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+
+    current_row = current_row + 1
+    progress_bar_download.grid :row => current_row, :column => 1, :columnspan => 10
+
+    current_row = current_row + 1
+    $status_label.grid :row => current_row, :column => 1, :columnspan => 10,:sticky => 'w'
+
+    #---------------------------------------------
+    current_row = current_row + 1
+    lbl_space_2 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
+    sep_2 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+
+    current_row = current_row + 1
+    chk_convert.grid :row => current_row, :column => 0, :columnspan => 4,:sticky => 'w'
+    $btn_convert.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+    current_row = current_row + 1
+    lbl_template.grid :row => current_row, :column => 0, :columnspan => 3, :sticky => 'e'
+    txt_template.grid :row => current_row, :column => 3, :columnspan => 8, :sticky => 'we'
+    btn_template.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+    #$btn_experiment
+
+    current_row = current_row + 1
+    progress_bar_convert.grid :row => current_row, :column => 1, :columnspan => 10
+
+    #---------------------------------------------
+    current_row = current_row + 1
+    lbl_space_3 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
+    sep_3 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+
+    current_row = current_row + 1
+    lbl_consolidate.grid :row => current_row, :column => 0, :columnspan => 3
+    rd_data_span_0.grid :row => current_row, :column => 3, :columnspan => 1, :sticky => 'w'
+    rd_data_span_1.grid :row => current_row, :column => 4, :columnspan => 1, :sticky => 'w'
+    rd_data_span_2.grid :row => current_row, :column => 5, :columnspan => 1, :sticky => 'w'
+    rd_data_span_3.grid :row => current_row, :column => 6, :columnspan => 1, :sticky => 'w'
+    $btn_consolidate.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+
+    current_row = current_row + 1
+    progress_bar_consolidate.grid :row => current_row, :column => 1, :columnspan => 10
+
+    current_row = current_row + 1
+
+    #---------------------------------------------
+    current_row = current_row + 1
+    lbl_space_4 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
+    sep_4 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+
+    current_row = current_row + 1
+    btn_save.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
+    btn_exit.grid :row => current_row, :column => 2, :columnspan => 2
+    $btn_process.grid :row => current_row, :column => 4, :columnspan => 2, :sticky => 'w'
+
 
     TkGrid.columnconfigure root, 0, :weight => 1
     TkGrid.rowconfigure root, 0, :weight => 1
