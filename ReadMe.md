@@ -13,6 +13,11 @@ So, there are three main processes managed here, with corresponding classes enca
         * Works with either JSON and CSV formats.
         * Can also produce a single CSV file, but tool needs to gatekeep requests that would produce silly-sized files.
         * Designed to be flexible.  Can consolidate hourly files into daily files for example.
+        
+        
+[User Interface on MacOS](./screenshots/Gnip_Historical_PowerTrack_Data_Manager.png "Optional title")
+        
+        
 
 The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download, conversion, and consolidation options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
 
