@@ -22,7 +22,8 @@ class DM_Config
         :data_span,
 
         :arrays_to_collapse,
-        :header_overrides
+        :header_overrides,
+        :header_mappings
 
     def initialize
         #Defaults.
@@ -69,13 +70,28 @@ class DM_Config
         mappings['twitter_entities.user_mentions.0.name'] = 'user_mention_names'
         mappings['twitter_entities.user_mentions.0.id'] = 'user_mention_ids'
         mappings['gnip.matching_rules.0.value'] = 'rule_values'
-        mappings['gnip.matching_rules.0.tag'] = 'tag_values'
+        mappings['gnip.matching_rules.0.tag'] = 'rule_tags'
+        mappings['gnip.language.value'] = 'gnip_lang'
+
+        #Geographical metadata labels.
+        mappings['location.geo.coordinates.0.0.0'] = 'box_sw_long'
+        mappings['location.geo.coordinates.0.0.1'] = 'box_sw_lat'
+        mappings['location.geo.coordinates.0.1.0'] = 'box_nw_long'
+        mappings['location.geo.coordinates.0.1.1'] = 'box_nw_lat'
+        mappings['location.geo.coordinates.0.2.0'] = 'box_ne_long'
+        mappings['location.geo.coordinates.0.2.1'] = 'box_ne_lat'
+        mappings['location.geo.coordinates.0.3.0'] = 'box_se_long'
+        mappings['location.geo.coordinates.0.3.1'] = 'box_se_lat'
+        mappings['geo.coordinates.0'] = 'point_long'
+        mappings['geo.coordinates.1'] = 'point_lat'
+
+        #These Klout topics need some help.
+        mappings['gnip.klout_profile.topics.0.klout_topic_id'] = 'klout_topic_id'
+        mappings['gnip.klout_profile.topics.0.display_name'] = 'klout_topic_name'
+        mappings['gnip.klout_profile.topics.0.link'] = 'klout_topic_link'
 
         mappings
     end
-
-
-
 
     #Confirm a directory exists, creating it if necessary.
     def check_directory(directory)
@@ -128,18 +144,21 @@ class DM_Config
         settings['data_dir'] = @data_dir
         settings['job_info'] = @job_info
         settings['uncompress_data'] = @uncompress_data
-        #Convert.
+        #Conversion.
         settings['convert_csv'] = @convert_csv
         settings['activity_template'] = @activity_template
-        #Consolidate.
-        settings['consolidate_dir'] = @consolidate_dir
-        settings['data_span'] = @data_span
         settings['arrays_to_collapse'] = @arrays_to_collapse
         settings['header_overrides'] = @header_overrides
+        #Consolidation.
+        settings['consolidate_dir'] = @consolidate_dir
+        settings['data_span'] = @data_span
+
+        header_mappings = {}
 
         config = {}
         config['account'] = account
         config['settings'] = settings
+        config['header_mappings'] = header_mappings
 
         File.open(config_file, 'w') do |f|
             f.write config.to_yaml
@@ -174,13 +193,10 @@ class DM_Config
         set_uuid
         @data_dir = check_directory(config['settings']['data_dir'])
         @uncompress_data = config['settings']['uncompress_data']
-        #Convert.
+
+        #Conversion.
         @convert_csv = config['settings']['convert_csv']
         @activity_template = config['settings']['activity_template']
-        #Consolidate.
-        @consolidate_dir = config['settings']['consolidate_dir']
-        @data_span = config['settings']['data_span']
-
         temp = config['settings']['arrays_to_collapse']
         if !temp.nil? then
             @arrays_to_collapse = temp
@@ -190,9 +206,16 @@ class DM_Config
             @header_overrides = temp
         end
 
+        #Consolidation.
+        @consolidate_dir = config['settings']['consolidate_dir']
+        @data_span = config['settings']['data_span']
+
+        #Header mappings
+        temp = config['header_mappings']
+        if temp.length > 0 then
+            @header_mappings = temp
+        end
     end
-
-
 end
 
 #--------------------------------------------------------------------------
