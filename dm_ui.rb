@@ -4,9 +4,6 @@ require_relative './dm_status'
 require_relative './dm_common'
 
 #TODO: loading 'select dir' control with 'pre-set' value.
-#TODO: implement uncompressing.
-#TODO: implement CSV conversion.
-#TODO: implement data consolidation (with either JSON or CSV).
 
 #App UI code.  Based on Tk.  Requires a download manager object (oConfig)
 #=======================================================================================================================
@@ -304,10 +301,10 @@ if __FILE__ == $0  #This script code is executed when running this file.
     txt_account = Tk::Tile::Entry.new(content) {width 25; textvariable $UI_account_name}
     #Username
     lbl_username = Tk::Tile::Label.new(content) {text 'Username'}
-    txt_username = Tk::Tile::Entry.new(content) {width 35; textvariable $UI_user_name}
+    txt_username = Tk::Tile::Entry.new(content) {width 45; textvariable $UI_user_name}
     #Password
     lbl_password = Tk::Tile::Label.new(content) {text 'Password'}
-    txt_password = Tk::Tile::Entry.new(content) {width 25; textvariable $UI_password; show "*"}
+    txt_password = Tk::Tile::Entry.new(content) {width 35; textvariable $UI_password; show "*"}
 
 
     #------------------------------------------------------------
@@ -325,7 +322,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Uncompress data?
     chk_uncompress = Tk::Tile::CheckButton.new(content) {text 'Uncompress data files'; variable $UI_uncompress_data; set_value $UI_uncompress_data.to_s; }
     #Do it now?
-    btn_uncompress = Tk::Tile::Button.new(content) {text ' '; width 3; command {uncompress_files(oConfig)}}
+    btn_uncompress = Tk::Tile::Button.new(content) {text 'Now'; width 3; command {uncompress_files(oConfig)}}
     $btn_download = Tk::Tile::Button.new(content) {text 'Download Files'; width 15; command {toggle_download(oStatus)}}
 
     #Download Progress Bar details.
@@ -555,7 +552,11 @@ if __FILE__ == $0  #This script code is executed when running this file.
                 p 'UI Timer: consolidate!'
 
                 #Update consolidation progress bar.
-                UI_progress_bar_consolidate.value = (oStatus.files_consolidated.to_f / oStatus.files_total.to_f) * 100
+                if oStatus.files_total == 0 or oStatus.files_total.nil? then
+                    UI_progress_bar_consolidate.value = (oStatus.files_consolidated.to_f / oStatus.files_local.to_f) * 100
+                else
+                    UI_progress_bar_consolidate.value = (oStatus.files_consolidated.to_f / oStatus.files_total.to_f) * 100
+                end
 
             else
                 $btn_consolidate.text = 'Consolidate'
