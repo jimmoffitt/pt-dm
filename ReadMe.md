@@ -104,6 +104,35 @@ The above represent the current defaults that are automatically generated. These
 
 These are specified at config@header_mappings.
 
+        mappings['twitter_entities.hashtags.0.text'] = 'hashtags'
+        mappings['twitter_entities.urls.0.url'] = 'twitter_urls'
+        mappings['twitter_entities.urls.0.expanded_url'] = 'twitter_expanded_urls'
+        mappings['twitter_entities.urls.0.display_url'] = 'twitter_display_urls'
+        mappings['twitter_entities.user_mentions.0.screen_name'] = 'user_mention_screen_names'
+        mappings['twitter_entities.user_mentions.0.name'] = 'user_mention_names'
+        mappings['twitter_entities.user_mentions.0.id'] = 'user_mention_ids'
+        mappings['gnip.matching_rules.0.value'] = 'rule_values'
+        mappings['gnip.matching_rules.0.tag'] = 'rule_tags'
+        mappings['gnip.language.value'] = 'gnip_lang'
+
+        #Geographical metadata labels.
+        mappings['location.geo.coordinates.0.0.0'] = 'box_sw_long'
+        mappings['location.geo.coordinates.0.0.1'] = 'box_sw_lat'
+        mappings['location.geo.coordinates.0.1.0'] = 'box_nw_long'
+        mappings['location.geo.coordinates.0.1.1'] = 'box_nw_lat'
+        mappings['location.geo.coordinates.0.2.0'] = 'box_ne_long'
+        mappings['location.geo.coordinates.0.2.1'] = 'box_ne_lat'
+        mappings['location.geo.coordinates.0.3.0'] = 'box_se_long'
+        mappings['location.geo.coordinates.0.3.1'] = 'box_se_lat'
+        mappings['geo.coordinates.0'] = 'point_long'
+        mappings['geo.coordinates.1'] = 'point_lat'
+
+        #These Klout topics need some help.
+        mappings['gnip.klout_profile.topics.0.klout_topic_id'] = 'klout_topic_id'
+        mappings['gnip.klout_profile.topics.0.display_name'] = 'klout_topic_name'
+        mappings['gnip.klout_profile.topics.0.link'] = 'klout_topic_link'
+
+
 
 
 
