@@ -405,73 +405,73 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
 
     #Set up grid positions
-    lbl_account.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
-    txt_account.grid :row => current_row, :column => 3, :columnspan => 2, :sticky => 'we'
-    lbl_username.grid :row => current_row, :column => 5, :columnspan => 2, :sticky => 'e'
-    txt_username.grid :row => current_row, :column => 7, :columnspan => 2
-    lbl_password.grid :row => current_row, :column => 9, :columnspan => 2, :sticky => 'e'
-    txt_password.grid :row => current_row, :column => 11, :columnspan => 2
+    lbl_account.grid :row => current_row, :column => 0, :columnspan => 1, :sticky => 'e'
+    txt_account.grid :row => current_row, :column => 2, :columnspan => 2, :sticky => 'w'
+    lbl_username.grid :row => current_row, :column => 4, :columnspan => 1, :sticky => 'w'
+    txt_username.grid :row => current_row, :column => 5, :columnspan => 2,  :sticky => 'w'
+    lbl_password.grid :row => current_row, :column => 7, :columnspan => 1, :sticky => 'w'
+    txt_password.grid :row => current_row, :column => 8, :columnspan => 2, :sticky => 'w'
 
     #---------------------------------------------
     current_row = current_row + 1
     lbl_space_1 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
-    sep_1 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+    sep_1 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
     current_row = current_row + 1
     lbl_uuid.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
-    txt_uuid.grid :row => current_row, :column => 3, :columnspan => 9, :sticky => 'we'
+    txt_uuid.grid :row => current_row, :column => 3, :columnspan => 7, :sticky => 'we'
 
     current_row = current_row + 1
     lbl_data_dir.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
-    txt_data_dir.grid :row => current_row, :column => 3, :columnspan => 8, :sticky => 'we'
-    btn_data_dir.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+    txt_data_dir.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
+    btn_data_dir.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
 
     current_row = current_row + 1
     chk_uncompress.grid :row => current_row, :column => 3, :columnspan => 1
     btn_uncompress.grid :row => current_row, :column => 4, :columnspan => 1
-    $btn_download.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+    $btn_download.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
 
     current_row = current_row + 1
-    progress_bar_download.grid :row => current_row, :column => 1, :columnspan => 10
+    progress_bar_download.grid :row => current_row, :column => 2, :columnspan => 8,:sticky => 'we'
 
     current_row = current_row + 1
-    $status_label.grid :row => current_row, :column => 1, :columnspan => 10,:sticky => 'w'
+    $status_label.grid :row => current_row, :column => 1, :columnspan => 9,:sticky => 'w'
 
     #---------------------------------------------
     current_row = current_row + 1
     lbl_space_2 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
-    sep_2 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+    sep_2 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
     current_row = current_row + 1
     chk_convert.grid :row => current_row, :column => 0, :columnspan => 4,:sticky => 'w'
-    $btn_convert.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+    $btn_convert.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
     current_row = current_row + 1
     lbl_template.grid :row => current_row, :column => 0, :columnspan => 3, :sticky => 'e'
-    txt_template.grid :row => current_row, :column => 3, :columnspan => 8, :sticky => 'we'
-    btn_template.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+    txt_template.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
+    btn_template.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
     #$btn_experiment
 
     current_row = current_row + 1
-    progress_bar_convert.grid :row => current_row, :column => 1, :columnspan => 10
+    progress_bar_convert.grid :row => current_row, :column => 2, :columnspan => 8,:sticky => 'we'
 
     #---------------------------------------------
     current_row = current_row + 1
     lbl_space_3 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
-    sep_3 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+    sep_3 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
     current_row = current_row + 1
-    lbl_consolidate.grid :row => current_row, :column => 0, :columnspan => 3
-    rd_data_span_0.grid :row => current_row, :column => 3, :columnspan => 1, :sticky => 'w'
-    rd_data_span_1.grid :row => current_row, :column => 4, :columnspan => 1, :sticky => 'w'
-    rd_data_span_2.grid :row => current_row, :column => 5, :columnspan => 1, :sticky => 'w'
-    rd_data_span_3.grid :row => current_row, :column => 6, :columnspan => 1, :sticky => 'w'
-    $btn_consolidate.grid :row => current_row, :column => 11, :columnspan => 1, :sticky => 'e'
+    lbl_consolidate.grid :row => current_row, :column => 0, :columnspan => 2
+    rd_data_span_0.grid :row => current_row, :column => 2, :columnspan => 2, :sticky => 'ew'
+    rd_data_span_1.grid :row => current_row, :column => 4, :columnspan => 2, :sticky => 'ew'
+    rd_data_span_2.grid :row => current_row, :column => 6, :columnspan => 2, :sticky => 'ew'
+    rd_data_span_3.grid :row => current_row, :column => 7, :columnspan => 2, :sticky => 'ew'
+    $btn_consolidate.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
 
     current_row = current_row + 1
-    progress_bar_consolidate.grid :row => current_row, :column => 1, :columnspan => 10
+    progress_bar_consolidate.grid :row => current_row, :column => 2, :columnspan => 8,:sticky => 'we'
 
     current_row = current_row + 1
 
@@ -479,7 +479,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     lbl_space_4 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
-    sep_4 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 13, :sticky => 'we')
+    sep_4 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
     current_row = current_row + 1
     btn_save.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
@@ -563,7 +563,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
             end
 
         rescue
-           p 'ERROR in main timer, keep going!'
+           p 'ERROR in main timer (*but keep going*)!'
         end
     }
 
