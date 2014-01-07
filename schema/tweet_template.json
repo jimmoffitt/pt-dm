@@ -1,47 +1,43 @@
 {
-  "id": "tag:search.twitter.com,2005:399027463118139392",
+  "id": "tag:search.twitter.com,2005:418130988250570752",
   "objectType": "activity",
   "actor": {
     "objectType": "person",
-    "id": "id:twitter.com:500305822",
-    "displayName": "Mark Gauvs!",
-    "postedTime": "2010-10-09T04:15:35.000Z",
-    "image": "https:\/\/pbs.twimg.com\/profile_images\/378800000712873502\/4d4f0d054d5af2a9b8732a1607cb9f81_normal.jpeg",
-    "summary": "Hii There,My Name Is Mark! :) My Life Revolves #Dexter,#Hannibal,#TheFollowing,#SleepyHollow,#TheWalkingDead,#Dracula,#EvilDead,Etc.\u2764\u2764\ufe0f Born In '94! #TeamiPhone",
-    "links": [
-      {
-        "href": null,
-        "rel": "me"
-      }
-    ],
-    "friendsCount": 378,
-    "preferredUsername": "MarkGauvreau",
+    "id": "id:twitter.com:17200003",
+    "link": "http:\/\/www.twitter.com\/jimmoffitt",
+    "displayName": "jimmoffitt",
+    "postedTime": "2008-11-05T23:06:37.000Z",
+    "summary": "Hi world. Love family, water, snow, music, travel, photography, food, learning, user interfaces, solving problems.",
+    "friendsCount": 85,
+    "followersCount": 80,
+    "statusesCount": 259,
+    "twitterTimeZone": "Mountain Time (US & Canada)",
+    "utcOffset": "-25200",
     "languages": [
       "en"
     ],
     "location": {
-      "displayName": "Milton,Ontario Canada"
+      "displayName": "Longmont, Colorado"
     },
-    "favoritesCount": 2915
+    "favoritesCount": 37
   },
   "verb": "post",
-  "postedTime": "2013-11-09T04:15:35.000Z",
+  "postedTime": "2013-12-31T21:26:10.000Z",
   "generator": {
-    "displayName": "Twitter for iPhone"
+    "displayName": "web",
+    "link": "http:\/\/twitter.com"
   },
   "provider": {
     "objectType": "service",
-    "displayName": "Twitter"
+    "displayName": "Twitter",
+    "link": "http:\/\/www.twitter.com"
   },
-  "link": "http:\/\/twitter.com\/MarkGauvreau\/statuses\/399027463118139392",
-  "body": "First Rum And Coke At Rad Brothers With @insertdopeename And @beaverdude92!\ud83d\ude0d\ud83d\ude03\ud83d\udc4c\u2764\ufe0f\ud83c\udf7b\ud83c\udf78#PerksOfBeing19 #TooSick http:\/\/t.co\/BgdiUUWyas",
+  "link": "http:\/\/twitter.com\/jimmoffitt\/statuses\/418130988250570752",
+  "body": "Generating a sample tweet for documentation. \nhttps:\/\/t.co\/UpVhmiFDAv\nhttps:\/\/t.co\/OY7MlhFsGB\n@thisuser @thatuser\n#HappyNewYear #Ruby",
   "object": {
-    "objectType": "note",
-    "id": "object:search.twitter.com,2005:399027463118139392",
-    "summary": "First Rum And Coke At Rad Brothers With @insertdopeename And @beaverdude92!\ud83d\ude0d\ud83d\ude03\ud83d\udc4c\u2764\ufe0f\ud83c\udf7b\ud83c\udf78#PerksOfBeing19 #TooSick http:\/\/t.co\/BgdiUUWyas",
-    "link": "http:\/\/twitter.com\/MarkGauvreau\/statuses\/399027463118139392",
-    "postedTime": "2013-11-09T04:15:35.000Z"
+    "id": "object:search.twitter.com,2005:418130988250570752"
   },
+  "favoritesCount": 0,
   "location": {
     "objectType": "place",
     "link": "https:\/\/api.twitter.com\/1.1\/geo\/id\/20a353fbe15b0384.json",
@@ -79,42 +75,20 @@
   "twitter_entities": {
     "hashtags": [
       {
-        "text": "PerksOfBeing19"
-      },
-      {
-        "text": "TooSick"
+        "text": "HappyNewYear"
       }
     ],
-    "symbols": [
-      
-    ],
     "urls": [
-      
+      {
+        "url": "https:\/\/t.co\/UpVhmiFDAv",
+        "expanded_url": "https:\/\/github.com\/jimmoffitt\/pt-dm\/blob\/master\/ReadMe.md"
+      }
     ],
     "user_mentions": [
       {
-        "screen_name": "insertdopeename",
-        "name": "Ryan Ashley",
-        "id": 751491714,
-        "id_str": "751491714"
-      },
-      {
-        "screen_name": "beaverdude92",
-        "name": "josh brown",
-        "id": 1074217890,
-        "id_str": "1074217890"
-      }
-    ],
-    "media": [
-      {
-        "id": 3.9902746297135e+17,
-        "id_str": "399027462971351040",
-        "media_url": "http:\/\/pbs.twimg.com\/media\/BYmhXQoIYAABspK.jpg",
-        "media_url_https": "https:\/\/pbs.twimg.com\/media\/BYmhXQoIYAABspK.jpg",
-        "url": "http:\/\/t.co\/BgdiUUWyas",
-        "display_url": "pic.twitter.com\/BgdiUUWyas",
-        "expanded_url": "http:\/\/twitter.com\/MarkGauvreau\/status\/399027463118139392\/photo\/1",
-        "type": "photo"
+        "screen_name": "thisuser",
+        "name": "This User",
+        "id": 60050610
       }
     ]
   },
@@ -124,37 +98,28 @@
   "gnip": {
     "matching_rules": [
       {
-        "value": "has:geo has:profile_geo has:media has:links has:lang has:mentions has:hashtags",
-        "tag": null
-      },
-      {
-        "value": "another",
-        "tag": null
-       }
+        "value": "#Ruby",
+        "tag": "software-languages"
+      }
     ],
     "urls": [
       {
-        "url": "http:\/\/t.co\/BgdiUUWyas",
-        "expanded_url": "http:\/\/twitter.com\/MarkGauvreau\/status\/399027463118139392\/photo\/1",
+        "url": "https:\/\/t.co\/UpVhmiFDAv",
+        "expanded_url": "https:\/\/github.com\/jimmoffitt\/pt-dm\/blob\/master\/ReadMe.md",
         "expanded_status": 200
       }
     ],
-    "klout_score": 30,
+    "klout_score": 46,
     "klout_profile": {
       "topics": [
         {
-          "klout_topic_id": "10000000000000016615",
-          "displayName": "Food and Drink",
-          "link": "http:\/\/klout.com\/topic\/id\/10000000000000016615"
-        },
-        {
-          "klout_topic_id": "10000000000000008253",
-          "displayName": "Twitter",
-          "link": "http:\/\/klout.com\/topic\/id\/10000000000000008253"
+          "klout_topic_id": "10000000000000010591",
+          "displayName": "Warrior Dash",
+          "link": "http:\/\/klout.com\/topic\/id\/10000000000000010591"
         }
       ],
-      "klout_user_id": "65020726651640400",
-      "link": "http:\/\/klout.com\/user\/id\/65020726651640400"
+      "klout_user_id": "26177177599171892",
+      "link": "http:\/\/klout.com\/user\/id\/26177177599171892"
     },
     "language": {
       "value": "en"
@@ -165,17 +130,18 @@
         "geo": {
           "type": "point",
           "coordinates": [
-            -79.88294,
-            43.51681
+            -105.10193,
+            40.16721
           ]
         },
         "address": {
-          "country": "Canada",
-          "countryCode": "CA",
-          "locality": "Milton",
-          "region": "Ontario"
+          "country": "United States",
+          "countryCode": "US",
+          "locality": "Longmont",
+          "region": "Colorado",
+          "subRegion": "Boulder County"
         },
-        "displayName": "Milton, Ontario, Canada"
+        "displayName": "Longmont, Colorado, United States"
       }
     ]
   }
