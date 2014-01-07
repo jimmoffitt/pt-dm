@@ -1,4 +1,4 @@
-pt-dm == PowerTrack Data Manager
+pt-dm == Historical PowerTrack Data Manager
 =====
 
 **Data manager for Gnip Historical PowerTrack.  Written in Ruby for Windows 7, MacOS and Linux.**
@@ -19,7 +19,7 @@ So, there are three main processes managed here, with corresponding classes enca
         
         
 
-The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account  information, job details, and download, conversion, and consolidation options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates the file downloading. The dm_process can also be used with a headless script, dm_script.rb.  
+The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account information, job details, and download, conversion, and consolidation options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates and manages file downloading, data format conversion, and file consolidation. The dm_process can also be used with a headless script, dm_script.rb.  
 
 Setting up application on Windows:
 + Copy dm_process.exe and dm_ui.exe to a folder.
@@ -36,6 +36,9 @@ Setting up application on MacOS/Linux:
 Downloading files:
 + Click the "Download Data" button.  
 
+***Development notes***
+
+
 **The Joys of Tk and Threading**
 
 [Saga of threading and landing with two separate processes?]
@@ -47,29 +50,7 @@ The UI and worker objects/apps needed to communicate with each other.  The UI ne
 Since a design goal was to develop on the MacOS and deploy on Windows, a simple cross-process communication mechanism was needed.  As a first step it was designed to communicate via a simple YAML status file.  Both applications reference a common status class with methods for reading and writing the status file.
 
 
-**Development notes**
 
-
-**SSL certificate issues with Ruby on Windows**
-
-Some useful links about the Ruby/net::https/SSL issue:
-* http://blog.kabisa.nl/2009/12/04/ruby-and-ssl-certificate-validation/
-* http://notetoself.vrensk.com/2008/09/verified-https-in-ruby/
-
-If you are getting SSL certificate errors, try removing the "cacert.pem" in the local directory.
-If that file is not found, this app will go out and create a fresh file from http://curl.haxx.se/ca/cacert.pem.
-
-
-**Creating a Ruby executable on Windows**
-
-This Ruby app is deployed on Windows using the Ocra gem:
-* http://ocra.rubyforge.org/
-* http://rubyonwindows.blogspot.com/2009/05/ocra-one-click-ruby-application-builder.html
-
-If you want to make code changes, you can re-create the Windows executable with these commands:
-* \pt_dm\ocra dm_process.rb --windows
-* \pt_dm\ocra dm_ui.rb --windows --no-autoload
-* 
 
 
 **JSON-to-CSV Conversion notes**
@@ -132,6 +113,27 @@ These are specified at config@header_mappings.
         mappings['gnip.klout_profile.topics.0.display_name'] = 'klout_topic_name'
         mappings['gnip.klout_profile.topics.0.link'] = 'klout_topic_link'
 
+
+**SSL certificate issues with Ruby on Windows**
+
+Some useful links about the Ruby/net::https/SSL issue:
+* http://blog.kabisa.nl/2009/12/04/ruby-and-ssl-certificate-validation/
+* http://notetoself.vrensk.com/2008/09/verified-https-in-ruby/
+
+If you are getting SSL certificate errors, try removing the "cacert.pem" in the local directory.
+If that file is not found, this app will go out and create a fresh file from http://curl.haxx.se/ca/cacert.pem.
+
+
+**Creating a Ruby executable on Windows**
+
+This Ruby app is deployed on Windows using the Ocra gem:
+* http://ocra.rubyforge.org/
+* http://rubyonwindows.blogspot.com/2009/05/ocra-one-click-ruby-application-builder.html
+
+If you want to make code changes, you can re-create the Windows executable with these commands:
+* \pt_dm\ocra dm_process.rb --windows
+* \pt_dm\ocra dm_ui.rb --windows --no-autoload
+* 
 
 
 
