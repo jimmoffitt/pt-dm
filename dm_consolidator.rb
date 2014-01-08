@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 #This class knows what it takes to consolidate Historical PowerTrack data files.
 
 #With either JSON or CSV, we just open sub-files and write to super file in same format.
@@ -509,7 +511,7 @@ class DM_Consolidator
                 file_target.puts File.readlines(file_source)[1..-1]
             end
 
-
+            file_source.close
             File.delete(file_source)
         end
 
