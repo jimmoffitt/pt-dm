@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative './dm_config'
 require_relative './dm_status'
 require_relative './dm_logger'  #Not implemented yet.

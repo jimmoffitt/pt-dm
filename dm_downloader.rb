@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative "./pt_restful"
 require_relative "./dm_config"
 require_relative "./dm_status"
