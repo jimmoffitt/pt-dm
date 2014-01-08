@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'yaml'
 
 class DM_Status
@@ -94,7 +96,7 @@ class DM_Status
         @activities_converted = status_hash["activities_converted"]
 
         #Consolidation stats.
-        @file_consolidated = status_hash["files_consolidated"]
+        @files_consolidated = status_hash["files_consolidated"]
 
         @file_current = status_hash["file_current"]
         @status = status_hash["status"]
