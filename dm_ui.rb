@@ -9,7 +9,7 @@ require_relative './dm_common'
 #=======================================================================================================================
 
 #User Interface gems
-#TODO: may not be needed anymore after refactor.
+#TODO: may not be needed anymore after refactor. Need to retest on Windows.  Not needed on Linux/MacOS.
 #module TkCore
 #    RUN_EVENTLOOP_ON_MAIN_THREAD = true
 #end
@@ -17,6 +17,11 @@ require_relative './dm_common'
 require 'tk'
 require 'tkextlib/tile'
 require 'zlib'
+
+APP_TITLE = 'Gnip Historical PowerTrack File Manager'
+
+#UI defaults
+BUTTON_WIDTH = 10
 
 $enabled = false
 oCommon = DM_Common.new
@@ -83,13 +88,10 @@ def save_config(oConfig, oStatus)
     oConfig.save_config_yaml
 end
 
-def convert_experiment
+def test_convert
     p 'Conversion experiment!'
 end
 
-def consolidate_data
-    p 'Consolidate data...'
-end
 
 #TODO: port to somewhere else...
 def uncompress_files(oConfig)
@@ -290,7 +292,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Associates above TkVariables with UI controls.
 
     #Start building user interface.
-    root = TkRoot.new {title 'Gnip Historical PowerTrack Data Manager'}
+    root = TkRoot.new {title APP_TITLE}
     content = Tk::Tile::Frame.new(root) {padding '3 3 12 12'}
 
     #------------------------------------------------------------
@@ -317,20 +319,20 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Data folder widgets. Label, TextBox, and Button that activates the ChooseDir standard dialog.
     lbl_data_dir = Tk::Tile::Label.new(content) {text 'Data Directory'}
     txt_data_dir = Tk::Tile::Entry.new(content) {width 15; textvariable $UI_data_dir}
-    btn_data_dir = Tk::Tile::Button.new(content) {text 'Select Dir'; width 15; command {$UI_data_dir.value=select_data_dir(oConfig)}}
+    btn_data_dir = Tk::Tile::Button.new(content) {text '   '; width 5; command {$UI_data_dir.value=select_data_dir(oConfig)}}
 
     #Uncompress data?
     chk_uncompress = Tk::Tile::CheckButton.new(content) {text 'Uncompress data files'; variable $UI_uncompress_data; set_value $UI_uncompress_data.to_s; }
     #Do it now?
-    btn_uncompress = Tk::Tile::Button.new(content) {text 'Now'; width 3; command {uncompress_files(oConfig)}}
-    $btn_download = Tk::Tile::Button.new(content) {text 'Download Files'; width 15; command {toggle_download(oStatus)}}
+    btn_uncompress = Tk::Tile::Button.new(content) {text 'Now'; width 5; command {uncompress_files(oConfig)}}
+    $btn_download = Tk::Tile::Button.new(content) {text 'Download'; width BUTTON_WIDTH; command {toggle_download(oStatus)}}
 
     #Download Progress Bar details.
     progress_bar_download = Tk::Tile::Progressbar.new(content) {orient 'horizontal'; }
     progress_bar_download.maximum = 100
     progress_bar_download.variable = UI_progress_bar_download
 
-    $status_label = Tk::Tile::Label.new(content) {text 'Status:'}
+    $status_label_download = Tk::Tile::Label.new(content) {text 'Status:'}
 
 
     #------------------------------------------------------------
@@ -340,19 +342,23 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Data conversion widgets.
     #Convert to CSV?
     chk_convert = Tk::Tile::CheckButton.new(content) {text 'Convert from JSON to CSV   '; variable $UI_convert_csv; set_value $UI_convert_csv.to_s; }
-    $btn_convert = Tk::Tile::Button.new(content) {text 'Convert'; width 15; command {toggle_convert(oStatus)}}
+    $btn_convert = Tk::Tile::Button.new(content) {text 'Convert'; width BUTTON_WIDTH; command {toggle_convert(oStatus)}}
+
+    #Test controls.
+    $btn_test = Tk::Tile::Button.new(content) {text 'Test'; width BUTTON_WIDTH; command {test_convert}}
 
     #Conversion Template file.
     #Data folder widgets. Label, TextBox, and Button that activates the ChooseDir standard dialog.
     lbl_template = Tk::Tile::Label.new(content) {text 'JSON Template File'}
     txt_template = Tk::Tile::Entry.new(content) {width 15; textvariable $UI_activity_template}
-    btn_template = Tk::Tile::Button.new(content) {text 'Select File'; width 15; command {$UI_activity_template.value=select_activity_template(oConfig)}}
-    #$btn_experiment = Tk::Tile::Button.new(content) {text 'Test Conversion'; width 15; command {convert_experiment}}
+    btn_template = Tk::Tile::Button.new(content) {text '   '; width 5; command {$UI_activity_template.value=select_activity_template(oConfig)}}
 
     #Conversion Progress Bar details.
     progress_bar_convert = Tk::Tile::Progressbar.new(content) {orient 'horizontal'; }
     progress_bar_convert.maximum = 100
     progress_bar_convert.variable = UI_progress_bar_convert
+
+    $status_label_convert = Tk::Tile::Label.new(content) {text 'Status:'}
 
 
     #------------------------------------------------------------
@@ -371,7 +377,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     rd_data_span_1 = Tk::Tile::RadioButton.new(content) {text '1-hour'; variable $UI_data_span; value 1}
     rd_data_span_2 = Tk::Tile::RadioButton.new(content) {text '1-day'; variable $UI_data_span; value 2}
     rd_data_span_3 = Tk::Tile::RadioButton.new(content) {text 'Single File'; variable $UI_data_span; value 3; }
-    $btn_consolidate = Tk::Tile::Button.new(content) {text 'Consolidate '; width 15; command {toggle_consolidate(oStatus,oConfig)}}
+    $btn_consolidate = Tk::Tile::Button.new(content) {text 'Consolidate '; width BUTTON_WIDTH; command {toggle_consolidate(oStatus,oConfig)}}
 
     #Consolidation Progress Bar details.
     progress_bar_consolidate = Tk::Tile::Progressbar.new(content) {orient 'horizontal'; }
@@ -382,7 +388,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #-----------------------------------------
     btn_save = Tk::Tile::Button.new(content) {text 'Save Settings'; width 15; command {save_config(oConfig,oStatus)}}
     btn_exit = Tk::Tile::Button.new(content) {text 'Exit'; width 15; command {exit_app(oStatus)}}
-    $btn_process = Tk::Tile::Button.new(content) {text 'Process Data'; width 15; command {toggle_process(oStatus)}}
+    $btn_process = Tk::Tile::Button.new(content) {text 'Do All'; width BUTTON_WIDTH; command {toggle_process(oStatus)}}
 
 
     #-----------------------------------------
@@ -393,6 +399,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
         progress_bar_download.length = 770
         progress_bar_convert.length = 770
         progress_bar_consolidate.length = 770
+        btn_uncompress.width = 200
     else
         progress_bar_download.length = 900
         progress_bar_convert.length = 900
@@ -403,6 +410,8 @@ if __FILE__ == $0  #This script code is executed when running this file.
 
     current_row = -1
     current_row = current_row + 1
+
+    #Account details ---------------------------------------------------------------------------------------------------
 
     #Set up grid positions
     lbl_account.grid :row => current_row, :column => 0, :columnspan => 1, :sticky => 'e'
@@ -418,25 +427,27 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     sep_1 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
+
+    #Download details---------------------------------------------------------------------------------------------------
     current_row = current_row + 1
-    lbl_uuid.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
-    txt_uuid.grid :row => current_row, :column => 3, :columnspan => 7, :sticky => 'we'
+    lbl_uuid.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'we'
+    txt_uuid.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
+    $btn_download.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
 
     current_row = current_row + 1
     lbl_data_dir.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
     txt_data_dir.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
-    btn_data_dir.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
+    btn_data_dir.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
 
     current_row = current_row + 1
     chk_uncompress.grid :row => current_row, :column => 3, :columnspan => 1
     btn_uncompress.grid :row => current_row, :column => 4, :columnspan => 1
-    $btn_download.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
 
     current_row = current_row + 1
-    progress_bar_download.grid :row => current_row, :column => 2, :columnspan => 8,:sticky => 'we'
+    progress_bar_download.grid :row => current_row, :column => 3, :columnspan => 6,:sticky => 'we'
 
     current_row = current_row + 1
-    $status_label.grid :row => current_row, :column => 1, :columnspan => 9,:sticky => 'w'
+    $status_label_download.grid :row => current_row, :column => 3, :columnspan => 8,:sticky => 'w'
 
     #---------------------------------------------
     current_row = current_row + 1
@@ -444,17 +455,22 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     sep_2 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
+    #Conversion details-------------------------------------------------------------------------------------------------
     current_row = current_row + 1
     chk_convert.grid :row => current_row, :column => 0, :columnspan => 4,:sticky => 'w'
     $btn_convert.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
+    $btn_test.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
     current_row = current_row + 1
     lbl_template.grid :row => current_row, :column => 0, :columnspan => 3, :sticky => 'e'
     txt_template.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
-    btn_template.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
+    btn_template.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
     #$btn_experiment
 
     current_row = current_row + 1
-    progress_bar_convert.grid :row => current_row, :column => 2, :columnspan => 8,:sticky => 'we'
+    progress_bar_convert.grid :row => current_row, :column => 3, :columnspan => 6,:sticky => 'we'
+
+    current_row = current_row + 1
+    $status_label_convert.grid :row => current_row, :column => 3, :columnspan => 8,:sticky => 'w'
 
     #---------------------------------------------
     current_row = current_row + 1
@@ -462,6 +478,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     sep_3 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
+    #Consolodation details----------------------------------------------------------------------------------------------
     current_row = current_row + 1
     lbl_consolidate.grid :row => current_row, :column => 0, :columnspan => 2
     rd_data_span_0.grid :row => current_row, :column => 2, :columnspan => 2, :sticky => 'ew'
@@ -471,7 +488,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     $btn_consolidate.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
 
     current_row = current_row + 1
-    progress_bar_consolidate.grid :row => current_row, :column => 2, :columnspan => 8,:sticky => 'we'
+    progress_bar_consolidate.grid :row => current_row, :column => 3, :columnspan => 6,:sticky => 'we'
 
     current_row = current_row + 1
 
@@ -481,10 +498,11 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     sep_4 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
+    #Application details------------------------------------------------------------------------------------------------
     current_row = current_row + 1
     btn_save.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
     btn_exit.grid :row => current_row, :column => 2, :columnspan => 2
-    $btn_process.grid :row => current_row, :column => 4, :columnspan => 2, :sticky => 'w'
+    $btn_process.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
 
 
     TkGrid.columnconfigure root, 0, :weight => 1
@@ -498,7 +516,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     i = 1
     tick = proc{|o|
 
-        begin
+        begin #UI event loop.
 
             #p 'UI timer...'
 
@@ -524,10 +542,10 @@ if __FILE__ == $0  #This script code is executed when running this file.
                 UI_progress_bar_download.value = (oStatus.files_local.to_f/oStatus.files_total.to_f) * 100
                 i = i + 1
 
-                $status_label.text = "Have downloaded #{oStatus.files_local} of #{oStatus.files_total} files."
+                $status_label_download.text = "Have downloaded #{oStatus.files_local} of #{oStatus.files_total} files."
 
                 if (oStatus.files_local.to_f == oStatus.files_total.to_f) and oStatus.files_total.to_f > 0 then
-                    $status_label.text = $status_label.text + '  Finished.'
+                    $status_label_download.text = $status_label_download.text + '  Finished.'
                     oStatus.enabled = false
                     oStatus.download = false
                     $enabled = false
@@ -543,6 +561,16 @@ if __FILE__ == $0  #This script code is executed when running this file.
                 #Update conversion progress bar.
                 UI_progress_bar_convert.value = (oStatus.activities_converted.to_f / oStatus.activities_total.to_f) * 100
 
+                $status_label_convert.text = "Have converted #{oStatus.activities_converted} of #{oStatus.activities_total} activities."
+
+                if (oStatus.activities_converted.to_f == oStatus.activities_total.to_f) and oStatus.activities_total.to_f > 0 then
+                    $status_label_convert.text = $status_label_convert.text + '  Finished.'
+                    oStatus.enabled = false
+                    oStatus.convert = false
+                    $enabled = false
+                    oStatus.save_status
+                    $btn_convert.text = 'Convert Data'
+                end
             else
                 $btn_convert.text = 'Convert'
             end
@@ -567,6 +595,8 @@ if __FILE__ == $0  #This script code is executed when running this file.
         end
     }
 
+    #-------------------------------------------------------------------------------------------------------------------
+    #Timer hits tick loop every interval--------------------------------------------------------------------------------
     timer = TkTimer.new(500, -1, tick )
     timer.start(0)
 
