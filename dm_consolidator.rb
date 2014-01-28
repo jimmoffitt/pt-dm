@@ -168,15 +168,12 @@ class DM_Consolidator
             when '1'
                 @span_target_minutes = 60
                 @span_target_marker = 'hr'
-                @span_target = '1'
             when '2'
                 @span_target_minutes = 24 * 60
                 @span_target_marker = 'day'
-                @span_target = '2'
             when '3'
                 @span_target_minutes = ALL_MINUTES
                 @span_target_marker = 'all'
-                @span_target = '3'
             else
                 p 'Error getting minutes in data_span'
                 @span_target_minutes = -1
@@ -227,22 +224,22 @@ class DM_Consolidator
             when 60
                 #snapping back to even hour.
                 if @set_source_start.min > 0 then
-                    @set_target_start = Time.new(@set_source_start.year, @set_source_start.month, @set_source_start.day,@set_source_start.hour,0)
+                    @set_target_start = Time.utc(@set_source_start.year, @set_source_start.month, @set_source_start.day,@set_source_start.hour,0)
                 end
 
                 #snapping forward to even hour.
                 if @set_source_end.min > 0 then
-                    @set_target_end = Time.new(@set_source_end.year, @set_source_end.month, @set_source_end.day, @set_source_end.hour + 1,0)
+                    @set_target_end = Time.utc(@set_source_end.year, @set_source_end.month, @set_source_end.day, @set_source_end.hour + 1,0)
                 end
             when 24 * 60
                 #snapping back to even day.
                 if @set_source_start.hour > 0 or @set_source_start.min then
-                    @set_target_start = Time.new(@set_source_start.year, @set_source_start.month, @set_source_start.day, 0 ,0)
+                    @set_target_start = Time.utc(@set_source_start.year, @set_source_start.month, @set_source_start.day, 0 ,0)
                 end
 
                 #snapping forward to even day.
                 if @set_source_end.hour > 0 then
-                    @set_target_end = Time.new(@set_source_end.year, @set_source_end.month, @set_source_start.day + 1, 0 ,0)
+                    @set_target_end = Time.utc(@set_source_end.year, @set_source_end.month, @set_source_start.day + 1, 0 ,0)
                 end
 
             when ALL_MINUTES
@@ -256,6 +253,7 @@ class DM_Consolidator
             file_name_tokens = []
             file_name_tokens = filename.split(/[._]/)
             date_str = file_name_tokens[-3].gsub!(@config.job_uuid,'')
+            date_str = "#{date_str[0..3]}-#{date_str[4..5]}-#{date_str[6..7]} #{date_str[8..9]}:#{date_str[10..11]} UTC"
             time = Time.parse(date_str)
         rescue
             p "Error parsing timestamp from filename."
@@ -299,7 +297,7 @@ class DM_Consolidator
         file_name_tokens = filename.split(/[._]/)
 
         date_str = file_name_tokens[-3].gsub!(@config.job_uuid,'')
-        time = Time.new
+        time = Time.utc
         @file_start = Time.parse(date_str)
         @file_end = @file_start + (60 * @span_minutes)
 
@@ -311,23 +309,6 @@ class DM_Consolidator
         if @file_end > @set_end then
             @set_end = @file_end
         end
-
-=begin
-        case file_name_tokens[-2]
-            when "activities"
-                p 'standard HPT 10-min file'
-
-            when 'hr'
-                p 'hourly files'
-            when 'day'
-                p 'daily files'
-            when 'all'
-                p 'done. nothing to do'
-            else
-                p 'error'
-        end
-=end
-
     end
 
 
@@ -359,7 +340,7 @@ class DM_Consolidator
     end
 
     def get_date_object(time_string)
-        time = Time.new
+        time = Time.utc
         time = Time.parse(time_string)
         return time
     end
@@ -369,10 +350,10 @@ class DM_Consolidator
         #Now snap appropriately!
         case @span_target_minutes
             when 60
-                Time.new(file_time.year, file_time.month, file_time.day, file_time.hour,0)
+                Time.utc(file_time.year, file_time.month, file_time.day, file_time.hour,0)
 
             when 24 * 60
-                Time.new(file_time.year, file_time.month, file_time.day, 0 ,0)
+                Time.utc(file_time.year, file_time.month, file_time.day, 0 ,0)
 
             when ALL_MINUTES
                 file_time #just pass back, don't need to snap here.
@@ -399,8 +380,17 @@ class DM_Consolidator
         file_count = 0
         extensions = []
         have_target_filename = false
+        target_span_name = get_span_name(@config.data_span)
 
-        files = FileList.new("#{@config.data_dir}/*#{@config.job_uuid}*.*").exclude("*#{get_span_name(@config.data_span)}*")
+        files = Array.new
+        files = FileList.new("#{@config.data_dir}/*#{@config.job_uuid}*.*").exclude("*#{target_span_name}*")
+
+        files.each do |file|
+            if file.include? target_span_name then
+                file.delete(file)
+            end
+        end
+
 
         files.each do |file|
 
@@ -479,13 +469,17 @@ class DM_Consolidator
                 end
             end
 
+            if filename.include?("2340") or filename.include?("2350") or filename.include?("0000")  then
+                p 'stop'
+            end
+
             file_source = File.open(filename)
 
             file_time = get_file_time(filename)
 
             if (file_time < (current_target_time + (@span_target_minutes * 60)) or @span_target_minutes == ALL_MINUTES) then #Still in current target file's domain.
                 #Write Source contents to Target file.
-               #p 'temp'
+               p 'Write Source contents to Target file'
 
             else #Then we have a new Target file
 
@@ -508,7 +502,7 @@ class DM_Consolidator
                 file_target.puts file_source.read
                 need_header = false
             else
-                file_target.puts File.readlines(file_source)[1..-1]
+                file_target.puts File.readlines(file_source)[1..-2]
             end
 
             file_source.close
@@ -518,7 +512,6 @@ class DM_Consolidator
         if @span_target_minutes == ALL_MINUTES then
             file_target.close
         end
-
     end
 end
 
