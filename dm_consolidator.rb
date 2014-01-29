@@ -85,13 +85,14 @@ class DM_Consolidator
     require 'rake'
 
     ALL_MINUTES = 999999
+    SET_FILE_SIZE = 10 #MB
 
 
     attr_accessor :config, #--> oConfig.data_span is set by user and = ending data span.
                   :status, #Fundamental state objects.
 
                   #There are about where we are starting.
-                  :span_source,   #==>  #0-None, 1-hour, 2-day, or 3-all - inferred from filename metadata.
+                  :span_source,   #==>  #0-None, 1-hour, 2-day, 3-all or 4-set-size - inferred from filename metadata.
                   :span_source_minutes,
                   :span_source_marker,
                   #Date span of all, boundary conditions.
@@ -102,7 +103,7 @@ class DM_Consolidator
                   :file_source_end,
 
                   #These are about where we are going with consolidation.
-                  :span_target,   #config.data_span ==>  #0-None, 1-hour, 2-day, or 3-all
+                  :span_target,   #config.data_span ==>  #0-None, 1-hour, 2-day, 3-all, 4-set size (10 MB default)
                   :span_target_minutes,
                   :span_target_marker,
                   #Date span of all, boundary conditions.
@@ -152,6 +153,8 @@ class DM_Consolidator
                 'day'
             when '3'
                 'all'
+            when '4'
+                'setsize'
             else
                 'error'
         end
@@ -161,6 +164,7 @@ class DM_Consolidator
     #Set the span timestamps for the files we are creating (target files).
     def set_span_target_details(span_target)
 
+        @span_target = span_target
         span_target = span_target.to_s
 
         case span_target
@@ -174,6 +178,9 @@ class DM_Consolidator
             when '3'
                 @span_target_minutes = ALL_MINUTES
                 @span_target_marker = 'all'
+            when '4'
+                @span_target_minutes = 0
+                @span_target_marker = 'setsize'
             else
                 p 'Error getting minutes in data_span'
                 @span_target_minutes = -1
@@ -190,6 +197,8 @@ class DM_Consolidator
                 return 60
             when 'day'
                 return 24 * 60
+            when 'setsize'
+                return 0
             when 'all'
                 return ALL_MINUTES
             else
@@ -290,7 +299,6 @@ class DM_Consolidator
 
     def set_file_times(filename)
 
-
         #if filename ends in _activities, then this is a 10-min HPT file.
         #Otherwise it ends in _hr _day or _all
         file_name_tokens = []
@@ -348,11 +356,16 @@ class DM_Consolidator
     def get_target_time(file_time)
 
         #Now snap appropriately!
+
         case @span_target_minutes
-            when 60
+
+            when 0 #Building 'set size' files
+                Time.utc(file_time.year, file_time.month, file_time.day, file_time.hour, file_time.min)
+
+            when 60  #hourly files
                 Time.utc(file_time.year, file_time.month, file_time.day, file_time.hour,0)
 
-            when 24 * 60
+            when 24 * 60  # daily files
                 Time.utc(file_time.year, file_time.month, file_time.day, 0 ,0)
 
             when ALL_MINUTES
@@ -387,10 +400,9 @@ class DM_Consolidator
 
         files.each do |file|
             if file.include? target_span_name then
-                file.delete(file)
+                File.delete(file)
             end
         end
-
 
         files.each do |file|
 
@@ -414,8 +426,13 @@ class DM_Consolidator
 
         set_target_times #Based on source times, set target times
 
-        p "Source files contain activities starting at #{@set_source_start} and ending at #{@set_source_end}"
-        p "Will build Target files starting at #{@set_target_start} and ending at #{@set_target_end}"
+        if @span_target_minutes > 0 then
+            p "Source files contain activities starting at #{@set_source_start} and ending at #{@set_source_end}..."
+            p "Will build Target files starting at #{@set_target_start} and ending at #{@set_target_end}..."
+        else
+            p "Will build files of a set size (default = #{SET_FILE_SIZE} MB)..."
+        end
+
 
         case extensions.length
             when 0
@@ -469,15 +486,13 @@ class DM_Consolidator
                 end
             end
 
-            if filename.include?("2340") or filename.include?("2350") or filename.include?("0000")  then
-                p 'stop'
-            end
-
             file_source = File.open(filename)
 
             file_time = get_file_time(filename)
 
-            if (file_time < (current_target_time + (@span_target_minutes * 60)) or @span_target_minutes == ALL_MINUTES) then #Still in current target file's domain.
+            file_size = File.size(file_target).to_f/ 2 ** 20
+
+            if (@span_target_minutes == 0 and file_size < SET_FILE_SIZE) or (@span_target_minutes != 0 and (file_time < (current_target_time + (@span_target_minutes * 60)) or @span_target_minutes == ALL_MINUTES)) then #Still in current target file's domain.
                 #Write Source contents to Target file.
                p 'Write Source contents to Target file'
 
@@ -489,8 +504,12 @@ class DM_Consolidator
 
                 #Increment new Target time and generate new Target filename.
                 current_target_time = get_target_time(file_time)
-                current_target_filename = String.new(@filename_target_template.gsub('<TARGET_FILE_DATE>', get_date_string(current_target_time)))
 
+                if @span_target_minutes != 0 then
+                    current_target_filename = String.new(@filename_target_template.gsub('<TARGET_FILE_DATE>', get_date_string(current_target_time)))
+                else
+                    current_target_filename = String.new(@filename_target_template.gsub('<TARGET_FILE_DATE>', get_date_string(current_target_time)))
+                end
                 #p "Creating new Target file: #{current_target_filename}"
 
                 file_target = File.new("#{@config.data_dir}/#{current_target_filename}", 'w')
