@@ -122,7 +122,6 @@ class DM_Downloader
 
             data = JSON.parse(job_url_json)
 
-
             @status.activities_total = data["results"]["activityCount"]
             @status.file_size_mb = data["results"]["fileSizeMB"]
             @status.save_status
@@ -180,8 +179,14 @@ class DM_Downloader
         files_downloaded = 0
 
         Dir.foreach(@config.data_dir) do |f|
-            if @to_get_list.has_key?(f) or @to_get_list.has_key?("#{f}.gz") or @to_get_list.has_key?("#{f.split('.')[0]}.json.gz")
+            if @to_get_list.has_key?(f) then
                 @to_get_list.delete(f)
+                files_downloaded = files_downloaded + 1
+            elsif @to_get_list.has_key?("#{f}.gz") then
+                @to_get_list.delete("#{f}.gz")
+                files_downloaded = files_downloaded + 1
+            elsif @to_get_list.has_key?("#{f.split('.')[0]}.json.gz") then
+                @to_get_list.delete("#{f.split('.')[0]}.json.gz")
                 files_downloaded = files_downloaded + 1
             end
         end
@@ -247,34 +252,31 @@ class DM_Downloader
 
     end
 
-    def confirm_uncompressed
+    #This can be called at the end of a download cycle to confirm that all files were successfully uncompressed.
+    #So if the uncompress option is on, then any *.gz file are a sign that the file is somehow corrupt.
+    #to_get_list ==> "/Users/jmoffitt/work/hpt/c404deay90/20140124-20140124_c404deay90201401241530_activities.json.gz"
+    #master @to_get_list hash key ==> 20140124-20140124_c404deay90201401241530_activities.json.gz
+    def confirm_downloads(to_get_list)
 
+        files = FileList.new("#{@config.data_dir}/*#{@config.job_uuid}*.gz")
 
+        retry_files = Hash.new
+
+        files.each do |file|
+            key = file.split('/')[-1]
+            retry_files[key] = to_get_list[key]
+            File.delete(file)  #Delete the file that could not be deleted.
+         end
+
+        if retry_files.length > 0 then
+            p "Re-downloading #{retry_files.length} files..."
+            download_files(retry_files, true)
+        #else
+        #    p 'Good news, no files to re-download.'
+        end
     end
 
-    def download_files
-
-        if @to_get_list.nil? then
-            get_filelist
-        end
-
-        look_before_leap
-
-        files_to_get = @files_total - @files_local
-
-
-
-        if files_to_get > 0 then
-            @logger.message "Starting to download #{files_to_get} files..."
-        else
-            @logger.message "All files have been downloaded..."
-
-            #If files are to be decompressed, then see if they need to be decompressed.
-            if @config.uncompress_data then
-                uncompress_files
-            end
-            return
-        end
+    def download_files(file_list, retrying)
 
         #Since there could be thousands of files to fetch, let's throttle the downloading.
         #Let's process a slice at a time, then multiple-thread the downloading of that slice.
@@ -286,16 +288,19 @@ class DM_Downloader
 
         begin_time = Time.now
 
-        @to_get_list.each_slice(slice_size) do |these_items|
+        file_list.each_slice(slice_size) do |these_items|
             for item in these_items
 
-                @status.get_status
-                if @status.download == false then
-                    @logger.message 'Disabled, stopping download and exiting.'
-                    exit
+                if !retrying then
+                    @status.get_status
+                    if @status.download == false then
+                        @logger.message 'Disabled, stopping download and exiting.'
+                        exit
+                    end
+
                 end
 
-                #p "Downloading #{item[0]}..."
+                p "Downloading #{item[0]}..."
 
                 threads << Thread.new(item[1]) do |url|
 
@@ -319,8 +324,6 @@ class DM_Downloader
                             p 'DOWNLOAD ERROR THROWN'
                         end
 
-                        p item[0]
-
                         if @config.uncompress_data == true or @config.uncompress_data == "1" then
                             uncompress_file(@config.data_dir + "/" + item[0])
                         end
@@ -342,10 +345,43 @@ class DM_Downloader
 
         @logger.message "Took #{Time.now - begin_time} seconds to download files.  "
 
-        @status.status = "Finished downloading."
     end
 
+    def manage_downloads
 
+        if @to_get_list.nil? then
+            get_filelist
+        end
+
+        look_before_leap
+
+        files_to_get = @files_total - @files_local
+
+        if files_to_get > 0 then
+            @logger.message "Starting to download #{files_to_get} files..."
+        else
+            @logger.message "All files have been downloaded..."
+
+            #If files are to be decompressed, then see if they need to be decompressed.
+            if @config.uncompress_data then
+                uncompress_files
+            end
+            return
+        end
+
+        download_files(@to_get_list,nil)
+
+        #We are at the end of the download cycle.
+        #If we are uncompressing, take a survey of the data directory and look for any that remain uncompressed.
+        #This is a sign of a corrupt gz file, so go re-download.
+        if @config.uncompress_data == true or @config.uncompress_data == "1" then
+            confirm_downloads(@to_get_list)
+        end
+
+
+
+        @status.status = "Finished downloading."
+    end
 end
 
 #Following code is NOT invoked by any pt_dm component.
@@ -367,6 +403,6 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Download files.
     oWorker = DM_Downloader.new(oConfig,oStatus,nil)
 
-    oWorker.download_files
+    oWorker.manage_downloads
 
 end
