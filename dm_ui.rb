@@ -21,7 +21,7 @@ require 'zlib'
 APP_TITLE = 'Gnip Historical PowerTrack File Manager'
 
 #UI defaults
-BUTTON_WIDTH = 10
+BUTTON_WIDTH = 15
 
 $enabled = false
 oCommon = DM_Common.new
@@ -319,7 +319,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Data folder widgets. Label, TextBox, and Button that activates the ChooseDir standard dialog.
     lbl_data_dir = Tk::Tile::Label.new(content) {text 'Data Directory'}
     txt_data_dir = Tk::Tile::Entry.new(content) {width 15; textvariable $UI_data_dir}
-    btn_data_dir = Tk::Tile::Button.new(content) {text '   '; width 5; command {$UI_data_dir.value=select_data_dir(oConfig)}}
+    btn_data_dir = Tk::Tile::Button.new(content) {text '... '; width 5; command {$UI_data_dir.value=select_data_dir(oConfig)}}
 
     #Uncompress data?
     chk_uncompress = Tk::Tile::CheckButton.new(content) {text 'Uncompress data files'; variable $UI_uncompress_data; set_value $UI_uncompress_data.to_s; }
@@ -351,7 +351,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Data folder widgets. Label, TextBox, and Button that activates the ChooseDir standard dialog.
     lbl_template = Tk::Tile::Label.new(content) {text 'JSON Template File'}
     txt_template = Tk::Tile::Entry.new(content) {width 15; textvariable $UI_activity_template}
-    btn_template = Tk::Tile::Button.new(content) {text '   '; width 5; command {$UI_activity_template.value=select_activity_template(oConfig)}}
+    btn_template = Tk::Tile::Button.new(content) {text '...'; width 5; command {$UI_activity_template.value=select_activity_template(oConfig)}}
 
     #Conversion Progress Bar details.
     progress_bar_convert = Tk::Tile::Progressbar.new(content) {orient 'horizontal'; }
@@ -377,6 +377,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     rd_data_span_1 = Tk::Tile::RadioButton.new(content) {text '1-hour'; variable $UI_data_span; value 1}
     rd_data_span_2 = Tk::Tile::RadioButton.new(content) {text '1-day'; variable $UI_data_span; value 2}
     rd_data_span_3 = Tk::Tile::RadioButton.new(content) {text 'Single File'; variable $UI_data_span; value 3; }
+    rd_data_span_4 = Tk::Tile::RadioButton.new(content) {text '10 MB Files'; variable $UI_data_span; value 4; state 'disabled'; }
     $btn_consolidate = Tk::Tile::Button.new(content) {text 'Consolidate '; width BUTTON_WIDTH; command {toggle_consolidate(oStatus,oConfig)}}
 
     #Consolidation Progress Bar details.
@@ -417,9 +418,9 @@ if __FILE__ == $0  #This script code is executed when running this file.
     lbl_account.grid :row => current_row, :column => 0, :columnspan => 1, :sticky => 'e'
     txt_account.grid :row => current_row, :column => 2, :columnspan => 2, :sticky => 'w'
     lbl_username.grid :row => current_row, :column => 4, :columnspan => 1, :sticky => 'w'
-    txt_username.grid :row => current_row, :column => 5, :columnspan => 2,  :sticky => 'w'
-    lbl_password.grid :row => current_row, :column => 7, :columnspan => 1, :sticky => 'w'
-    txt_password.grid :row => current_row, :column => 8, :columnspan => 2, :sticky => 'w'
+    txt_username.grid :row => current_row, :column => 5, :columnspan => 1,  :sticky => 'w'
+    lbl_password.grid :row => current_row, :column => 6, :columnspan => 1, :sticky => 'w'
+    txt_password.grid :row => current_row, :column => 7, :columnspan => 2, :sticky => 'w'
 
     #---------------------------------------------
     current_row = current_row + 1
@@ -432,7 +433,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     lbl_uuid.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'we'
     txt_uuid.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
-    $btn_download.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
+
 
     current_row = current_row + 1
     lbl_data_dir.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
@@ -448,7 +449,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
 
     current_row = current_row + 1
     $status_label_download.grid :row => current_row, :column => 3, :columnspan => 8,:sticky => 'w'
-
+    $btn_download.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
     #---------------------------------------------
     current_row = current_row + 1
     lbl_space_2 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
@@ -458,7 +459,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Conversion details-------------------------------------------------------------------------------------------------
     current_row = current_row + 1
     chk_convert.grid :row => current_row, :column => 0, :columnspan => 4,:sticky => 'w'
-    $btn_convert.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
+
     $btn_test.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
     current_row = current_row + 1
     lbl_template.grid :row => current_row, :column => 0, :columnspan => 3, :sticky => 'e'
@@ -471,6 +472,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
 
     current_row = current_row + 1
     $status_label_convert.grid :row => current_row, :column => 3, :columnspan => 8,:sticky => 'w'
+    $btn_convert.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
 
     #---------------------------------------------
     current_row = current_row + 1
@@ -481,14 +483,18 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Consolodation details----------------------------------------------------------------------------------------------
     current_row = current_row + 1
     lbl_consolidate.grid :row => current_row, :column => 0, :columnspan => 2
-    rd_data_span_0.grid :row => current_row, :column => 2, :columnspan => 2, :sticky => 'ew'
-    rd_data_span_1.grid :row => current_row, :column => 4, :columnspan => 2, :sticky => 'ew'
-    rd_data_span_2.grid :row => current_row, :column => 6, :columnspan => 2, :sticky => 'ew'
-    rd_data_span_3.grid :row => current_row, :column => 7, :columnspan => 2, :sticky => 'ew'
-    $btn_consolidate.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
+    rd_data_span_0.grid :row => current_row, :column => 2, :columnspan => 1#, :sticky => 'ew'
+    rd_data_span_1.grid :row => current_row, :column => 3, :columnspan => 1#, :sticky => 'ew'
+    rd_data_span_2.grid :row => current_row, :column => 4, :columnspan => 1#, :sticky => 'ew'
+    rd_data_span_3.grid :row => current_row, :column => 5, :columnspan => 1#, :sticky => 'ew'
+    rd_data_span_4.grid :row => current_row, :column => 6, :columnspan => 1#, :sticky => 'ew'
+
 
     current_row = current_row + 1
     progress_bar_consolidate.grid :row => current_row, :column => 3, :columnspan => 6,:sticky => 'we'
+    current_row = current_row + 1
+    $btn_consolidate.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
+
 
     current_row = current_row + 1
 
@@ -502,7 +508,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     btn_save.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
     btn_exit.grid :row => current_row, :column => 2, :columnspan => 2
-    $btn_process.grid :row => current_row, :column => 9, :columnspan => 1, :sticky => 'e'
+    $btn_process.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
 
 
     TkGrid.columnconfigure root, 0, :weight => 1
@@ -525,7 +531,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
             #Are we downloading?
             if oStatus.download then
 
-                p 'UI Timer: download!'
+                #p 'UI Timer: download!'
 
                 if oStatus.job_uuid != oConfig.job_uuid then
                     #We have a new job_uuid, so clear the status
@@ -577,7 +583,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
 
             #Are we consolidating?
             if oStatus.consolidate and oConfig.data_span.to_i > 0 then
-                p 'UI Timer: consolidate!'
+                #p 'UI Timer: consolidate!'
 
                 #Update consolidation progress bar.
                 if oStatus.files_total == 0 or oStatus.files_total.nil? then
