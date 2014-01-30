@@ -14,9 +14,13 @@ So, there are three main processes managed here, with corresponding classes enca
         * Can also produce a single CSV file, but tool needs to gatekeep requests that would produce silly-sized files.
         * Designed to be flexible.  Can consolidate hourly files into daily files for example.
         
+
+User-interface (UI) was implemented with Ruby Tk window toolkit. Tk was selected for this prototype because it is native to the Ruby package installed on MacOS and Windows.  Since separating UI details from the data and file processing was a fundamental goal, it was assumed the UI details could be swapped out for others implemented in native Windows tool or deployed on Rails.
+      
+     [User Interface on MacOS](./screenshots/Gnip_Historical_PowerTrack_Data_Manager.png "MacOS")
         
-[User Interface on MacOS](./screenshots/Gnip_Historical_PowerTrack_Data_Manager.png "Optional title")
-        
+     [User Interface on Windows 7](./screenshots/Gnip_Historical_PowerTrack_Data_Manager.png "Win7")
+
         
 
 The application is made up of two executables: dm_ui.exe and dm_process.exe.  The dm_ui executable provides the user interface for entering account information, job details, and download, conversion, and consolidation options.  The user interface also enables monitoring of the download progress, as well as launches the dm_process executable. The dm_process executable automates and manages file downloading, data format conversion, and file consolidation. The dm_process can also be used with a headless script, dm_script.rb.  
