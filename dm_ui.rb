@@ -313,6 +313,7 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Download details.
     #------------------------------------------------------------
     #Long textbox for Data URL.  Also supports entry of job UUID.
+    lbl_download = Tk::Tile::Label.new(content) {text 'Download Data Files'}
     lbl_uuid = Tk::Tile::Label.new(content) {text 'Job UUID or Data URL'}
     txt_uuid = Tk::Tile::Entry.new(content) {width 90; textvariable $UI_job_info}
 
@@ -373,11 +374,11 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #Tk::Tile::Button.new(consolidation) {text 'Select Dir'; width 15; command {$UI_consolidate_dir.value = select_consolidate_dir(oConfig)};state "disabled"}
 
     lbl_consolidate = Tk::Tile::Label.new(content) {text 'Data Consolidation'}
-    rd_data_span_0 = Tk::Tile::RadioButton.new(content) {text 'None'; variable $UI_data_span; value 0}
-    rd_data_span_1 = Tk::Tile::RadioButton.new(content) {text '1-hour'; variable $UI_data_span; value 1}
-    rd_data_span_2 = Tk::Tile::RadioButton.new(content) {text '1-day'; variable $UI_data_span; value 2}
+    rd_data_span_0 = Tk::Tile::RadioButton.new(content) {text 'None'; variable $UI_data_span; value 0; }
+    rd_data_span_1 = Tk::Tile::RadioButton.new(content) {text '1-hour'; variable $UI_data_span; value 1; }
+    rd_data_span_2 = Tk::Tile::RadioButton.new(content) {text '1-day'; variable $UI_data_span; value 2; }
     rd_data_span_3 = Tk::Tile::RadioButton.new(content) {text 'Single File'; variable $UI_data_span; value 3; }
-    rd_data_span_4 = Tk::Tile::RadioButton.new(content) {text '10 MB Files'; variable $UI_data_span; value 4; state 'disabled'; }
+    rd_data_span_4 = Tk::Tile::RadioButton.new(content) {text '10 MB Files'; variable $UI_data_span; value 4; }
     $btn_consolidate = Tk::Tile::Button.new(content) {text 'Consolidate '; width BUTTON_WIDTH; command {toggle_consolidate(oStatus,oConfig)}}
 
     #Consolidation Progress Bar details.
@@ -426,17 +427,20 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     lbl_space_1 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
+    lbl_space_1b = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
     sep_1 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
 
     #Download details---------------------------------------------------------------------------------------------------
     current_row = current_row + 1
-    lbl_uuid.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'we'
+    lbl_download.grid :row => current_row, :column => 0, :columnspan => 2
+    current_row = current_row + 1
+    lbl_uuid.grid :row => current_row, :column => 0, :columnspan => 3, :sticky => 'e'
     txt_uuid.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
 
-
     current_row = current_row + 1
-    lbl_data_dir.grid :row => current_row, :column => 0, :columnspan => 2, :sticky => 'e'
+    lbl_data_dir.grid :row => current_row, :column => 0, :columnspan => 3, :sticky => 'e'
     txt_data_dir.grid :row => current_row, :column => 3, :columnspan => 6, :sticky => 'we'
     btn_data_dir.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
 
@@ -453,6 +457,8 @@ if __FILE__ == $0  #This script code is executed when running this file.
     #---------------------------------------------
     current_row = current_row + 1
     lbl_space_2 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
+    lbl_space_2b = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
     sep_2 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
@@ -478,6 +484,8 @@ if __FILE__ == $0  #This script code is executed when running this file.
     current_row = current_row + 1
     lbl_space_3 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
+    lbl_space_3b = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
     sep_3 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
     #Consolodation details----------------------------------------------------------------------------------------------
@@ -489,18 +497,18 @@ if __FILE__ == $0  #This script code is executed when running this file.
     rd_data_span_3.grid :row => current_row, :column => 5, :columnspan => 1#, :sticky => 'ew'
     rd_data_span_4.grid :row => current_row, :column => 6, :columnspan => 1#, :sticky => 'ew'
 
-
     current_row = current_row + 1
     progress_bar_consolidate.grid :row => current_row, :column => 3, :columnspan => 6,:sticky => 'we'
     current_row = current_row + 1
     $btn_consolidate.grid :row => current_row, :column => 8, :columnspan => 1, :sticky => 'e'
-
 
     current_row = current_row + 1
 
     #---------------------------------------------
     current_row = current_row + 1
     lbl_space_4 = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
+    current_row = current_row + 1
+    lbl_space_4b = Tk::Tile::Label.new(content) {text ' '}.grid( :row => current_row, :column => 0)
     current_row = current_row + 1
     sep_4 = Tk::Tile::Separator.new(content) { orient 'horizontal'}.grid( :row => current_row, :columnspan => 10, :sticky => 'we')
 
