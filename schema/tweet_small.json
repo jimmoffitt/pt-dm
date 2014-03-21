@@ -42,7 +42,7 @@
   "gnip": {
     "matching_rules": [
       {
-        "value": "is: retweetprofile_country_code: ph",
+        "value": "is: retweetprofile_country_code: ph"
       }
     ],
     "urls": [
