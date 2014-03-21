@@ -103,23 +103,23 @@
     "twitter_entities": {
       "hashtags": [
         {
-          "text": "HappyNewYear"
+          "text": "HappyNewYear",
           "indices": [
             86,
             90
-          ]        
+          ]
         }
       ],
-    "symbols": [
-       {
+      "symbols": [
+        {
           "text": "CO",
           "indices": [
             57,
             62
           ]
         }
-     ],      
-    "urls": [
+      ],
+      "urls": [
         {
           "url": "https: \/\/t.co\/OY7MlhFsGB",
           "expanded_url": "https: \/\/github.com\/jimmoffitt\/rbSearchAPI",
@@ -130,7 +130,7 @@
           ]
         }
       ],
-    "user_mentions": [
+      "user_mentions": [
         {
           "screen_name": "StJulienHotel",
           "name": "StJulienHotel",
@@ -142,7 +142,7 @@
           ]
         }
       ],
-     "media": [
+      "media": [
         {
           "id": 4.4675670928171e+17,
           "id_str": "446756709281705984",
@@ -184,6 +184,44 @@
     "twitter_lang": "en"
   },
   "favoritesCount": 0,
+  "location": {
+    "objectType": "place",
+    "displayName": "Littleton, CO",
+    "name": "Littleton",
+    "country_code": "United States",
+    "twitter_country_code": "US",
+    "link": "https:\/\/api.twitter.com\/1.1\/geo\/id\/910868722e1e4825.json",
+    "geo": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -105.062023,
+            39.565332
+          ],
+          [
+            -105.062023,
+            39.62983
+          ],
+          [
+            -104.973551,
+            39.62983
+          ],
+          [
+            -104.973551,
+            39.565332
+          ]
+        ]
+      ]
+    }
+  },
+  "geo": {
+    "type": "Point",
+    "coordinates": [
+      39.62319962,
+      -105.01208369
+    ]
+  },
   "twitter_entities": {
     "hashtags": [
       {
@@ -195,24 +233,24 @@
       }
     ],
     "symbols": [
-       {
-          "text": "CO",
-          "indices": [
-            57,
-            62
-          ]
-        }
+      {
+        "text": "CO",
+        "indices": [
+          57,
+          62
+        ]
+      }
     ],
-      "urls": [
-        {
-          "url": "http:\/\/t.co\/Fwt3DxRt8y",
-          "expanded_url": "http:\/\/ift.tt\/1hPwJz0",
-          "display_url": "ift.tt\/1hPwJz0",
-          "indices": [
-            63,
-            85
-          ]
-        }
+    "urls": [
+      {
+        "url": "http:\/\/t.co\/Fwt3DxRt8y",
+        "expanded_url": "http:\/\/ift.tt\/1hPwJz0",
+        "display_url": "ift.tt\/1hPwJz0",
+        "indices": [
+          63,
+          85
+        ]
+      }
     ],
     "user_mentions": [
       {
