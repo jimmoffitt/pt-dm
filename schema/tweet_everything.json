@@ -104,16 +104,33 @@
       "hashtags": [
         {
           "text": "HappyNewYear"
+          "indices": [
+            86,
+            90
+          ]        
         }
       ],
-      "urls": [
+    "symbols": [
+       {
+          "text": "CO",
+          "indices": [
+            57,
+            62
+          ]
+        }
+     ],      
+    "urls": [
         {
           "url": "https: \/\/t.co\/OY7MlhFsGB",
           "expanded_url": "https: \/\/github.com\/jimmoffitt\/rbSearchAPI",
-          "display_url": "github.com\/jimmoffitt\/rbS\u2026"
+          "display_url": "github.com\/jimmoffitt\/rbS\u2026",
+          "indices": [
+            63,
+            85
+          ]
         }
       ],
-      "user_mentions": [
+    "user_mentions": [
         {
           "screen_name": "StJulienHotel",
           "name": "StJulienHotel",
@@ -125,7 +142,7 @@
           ]
         }
       ],
-      "media": [
+     "media": [
         {
           "id": 4.4675670928171e+17,
           "id_str": "446756709281705984",
@@ -170,7 +187,7 @@
   "twitter_entities": {
     "hashtags": [
       {
-        "text": "PilipinoYanEh",
+        "text": "HappyNewYear",
         "indices": [
           73,
           87
@@ -178,10 +195,24 @@
       }
     ],
     "symbols": [
-      
+       {
+          "text": "CO",
+          "indices": [
+            57,
+            62
+          ]
+        }
     ],
-    "urls": [
-      
+      "urls": [
+        {
+          "url": "http:\/\/t.co\/Fwt3DxRt8y",
+          "expanded_url": "http:\/\/ift.tt\/1hPwJz0",
+          "display_url": "ift.tt\/1hPwJz0",
+          "indices": [
+            63,
+            85
+          ]
+        }
     ],
     "user_mentions": [
       {
@@ -192,16 +223,6 @@
         "indices": [
           3,
           17
-        ]
-      },
-      {
-        "screen_name": "StJulienHotel",
-        "name": "StJulienHotel",
-        "id": 78946410,
-        "id_str": "78946410",
-        "indices": [
-          99,
-          113
         ]
       }
     ],
