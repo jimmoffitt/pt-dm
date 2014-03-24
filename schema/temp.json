@@ -1,0 +1,4 @@
+twitter_entities.hashtags.0.text               --> hashtags
+twitter_entities.urls.0.expanded_url           --> twitter_expanded_urls
+twitter_entities.user_mentions.0.screen_name   --> user_mention_screen_names
+gnip.matching_rules.0.value                    --> rule_values
