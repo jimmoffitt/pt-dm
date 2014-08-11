@@ -1,1 +1,142 @@
-{"id":"tag:search.twitter.com,2005:378025418353573888","objectType":"activity","actor":{"objectType":"person","id":"id:twitter.com:601172446","link":"http://www.twitter.com/CUBoulderPolice","displayName":"CU-Boulder Police","postedTime":"2012-06-06T18:08:25.000Z","image":"https://si0.twimg.com/profile_images/2453157696/nrh16magexohhkmb3ifl_normal.jpeg","summary":"The University of Colorado Boulder Police page offers crime alerts, safety tips and more. Monitored during business hours. Please call 911 for emergencies.","links":[{"href":"http://police.colorado.edu","rel":"me"}],"friendsCount":112,"followersCount":2225,"listedCount":69,"statusesCount":584,"twitterTimeZone":"Mountain Time (US & Canada)","verified":false,"utcOffset":"-21600","preferredUsername":"CUBoulderPolice","languages":["en"],"location":{"objectType":"place","displayName":"Boulder, Colorado"},"favoritesCount":0},"verb":"post","postedTime":"2013-09-12T05:20:57.000Z","generator":{"displayName":"HootSuite","link":"http://www.hootsuite.com"},"provider":{"objectType":"service","displayName":"Twitter","link":"http://www.twitter.com"},"link":"http://twitter.com/CUBoulderPolice/statuses/378025418353573888","body":"Flash Flood Warning for #Boulder extended to 4:15AM. #boulderflood #cuboulder #cowx","object":{"objectType":"note","id":"object:search.twitter.com,2005:378025418353573888","summary":"Flash Flood Warning for #Boulder extended to 4:15AM. #boulderflood #cuboulder #cowx","link":"http://twitter.com/CUBoulderPolice/statuses/378025418353573888","postedTime":"2013-09-12T05:20:57.000Z"},"favoritesCount":0,"twitter_entities":{"hashtags":[{"text":"Boulder","indices":[24,32]},{"text":"boulderflood","indices":[53,66]},{"text":"cuboulder","indices":[67,77]},{"text":"cowx","indices":[78,83]}],"symbols":[],"urls":[],"user_mentions":[]},"twitter_filter_level":"medium","twitter_lang":"en","retweetCount":0,"gnip":{"matching_rules":[{"value":"Flash Flood Extended","tag":null}],"klout_score":60,"klout_profile":{"topics":[{"klout_topic_id":"10000000000000008253","displayName":"Twitter","link":"http://klout.com/topic/id/10000000000000008253"}],"klout_user_id":"36310281610919431","link":"http://klout.com/user/id/36310281610919431"},"language":{"value":"en"},"profileLocations":[{"objectType":"place","geo":{"type":"point","coordinates":[-105.27055,40.01499]},"address":{"country":"United States","countryCode":"US","locality":"Boulder","region":"Colorado"},"displayName":"Boulder, Colorado, United States"}]}}
+{
+  "id": "tag:search.twitter.com,2005:378025418353573888",
+  "objectType": "activity",
+  "actor": {
+    "objectType": "person",
+    "id": "id:twitter.com:601172446",
+    "link": "http:\/\/www.twitter.com\/CUBoulderPolice",
+    "displayName": "CU-Boulder Police",
+    "postedTime": "2012-06-06T18:08:25.000Z",
+    "image": "https:\/\/si0.twimg.com\/profile_images\/2453157696\/nrh16magexohhkmb3ifl_normal.jpeg",
+    "summary": "The University of Colorado Boulder Police page offers crime alerts, safety tips and more. Monitored during business hours. Please call 911 for emergencies.",
+    "links": [
+      {
+        "href": "http:\/\/police.colorado.edu",
+        "rel": "me"
+      }
+    ],
+    "friendsCount": 112,
+    "followersCount": 2225,
+    "listedCount": 69,
+    "statusesCount": 584,
+    "twitterTimeZone": "Mountain Time (US & Canada)",
+    "verified": false,
+    "utcOffset": "-21600",
+    "preferredUsername": "CUBoulderPolice",
+    "languages": [
+      "en"
+    ],
+    "location": {
+      "objectType": "place",
+      "displayName": "Boulder, Colorado"
+    },
+    "favoritesCount": 0
+  },
+  "verb": "post",
+  "postedTime": "2013-09-12T05:20:57.000Z",
+  "generator": {
+    "displayName": "HootSuite",
+    "link": "http:\/\/www.hootsuite.com"
+  },
+  "provider": {
+    "objectType": "service",
+    "displayName": "Twitter",
+    "link": "http:\/\/www.twitter.com"
+  },
+  "link": "http:\/\/twitter.com\/CUBoulderPolice\/statuses\/378025418353573888",
+  "body": "Flash Flood Warning for #Boulder extended to 4:15AM. #boulderflood #cuboulder #cowx",
+  "object": {
+    "objectType": "note",
+    "id": "object:search.twitter.com,2005:378025418353573888",
+    "summary": "Flash Flood Warning for #Boulder extended to 4:15AM. #boulderflood #cuboulder #cowx",
+    "link": "http:\/\/twitter.com\/CUBoulderPolice\/statuses\/378025418353573888",
+    "postedTime": "2013-09-12T05:20:57.000Z"
+  },
+  "favoritesCount": 0,
+  "twitter_entities": {
+    "hashtags": [
+      {
+        "text": "Boulder",
+        "indices": [
+          24,
+          32
+        ]
+      },
+      {
+        "text": "boulderflood",
+        "indices": [
+          53,
+          66
+        ]
+      },
+      {
+        "text": "cuboulder",
+        "indices": [
+          67,
+          77
+        ]
+      },
+      {
+        "text": "cowx",
+        "indices": [
+          78,
+          83
+        ]
+      }
+    ],
+    "symbols": [
+      
+    ],
+    "urls": [
+      
+    ],
+    "user_mentions": [
+      
+    ]
+  },
+  "twitter_filter_level": "medium",
+  "twitter_lang": "en",
+  "retweetCount": 0,
+  "gnip": {
+    "matching_rules": [
+      {
+        "value": "Flash Flood Extended",
+        "tag": null
+      }
+    ],
+    "klout_score": 60,
+    "klout_profile": {
+      "topics": [
+        {
+          "klout_topic_id": "10000000000000008253",
+          "displayName": "Twitter",
+          "link": "http:\/\/klout.com\/topic\/id\/10000000000000008253"
+        }
+      ],
+      "klout_user_id": "36310281610919431",
+      "link": "http:\/\/klout.com\/user\/id\/36310281610919431"
+    },
+    "language": {
+      "value": "en"
+    },
+    "profileLocations": [
+      {
+        "objectType": "place",
+        "geo": {
+          "type": "point",
+          "coordinates": [
+            -105.27055,
+            40.01499
+          ]
+        },
+        "address": {
+          "country": "United States",
+          "countryCode": "US",
+          "locality": "Boulder",
+          "region": "Colorado"
+        },
+        "displayName": "Boulder, Colorado, United States"
+      }
+    ]
+  }
+}
