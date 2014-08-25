@@ -1,6 +1,4 @@
 # encoding: UTF-8
-
-#This class is tied to the Download Manager UI and process objects...
 require 'base64'
 require 'yaml'
 require 'fileutils'
