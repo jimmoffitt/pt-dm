@@ -411,7 +411,7 @@ class DM_Converter
                 lookup = lookup.split(":")[-1]
             end
         rescue
-            p 'stop'
+            #do nothing, this is a media or user_mention id, with no ":" delimiters.
         end
 
         #p "key #{key} has value: #{lookup} "
@@ -528,6 +528,12 @@ class DM_Converter
         @status.save_status
     end
 
+
+    #Test conversion.
+    def convert_test
+
+    end
+
     #Main method that manages conversion process.
     def convert_files
 
@@ -575,7 +581,8 @@ class DM_Converter
             contents = File.read(file)
             activities = []
             contents.split("\n")[0..-2].each { |line|    #drop last "info" member.
-                if line.include?("id") then
+                #Dev TODO: just added the "id": match, untested
+                if line.include?('"id":"') then
                     activities << line
                 end
             }
@@ -603,11 +610,6 @@ class DM_Converter
 
                 keys_activity = Array.new
                 keys_activity = get_keys(activity_hash)
-
-                #TODO: dev remove.
-                #keys_activity.each { |key|
-                #    p "Activity key: #{key}"
-                #}
 
                 #Initialize @keys
                 @keys = Array.new
