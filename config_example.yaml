@@ -1,0 +1,15 @@
+account:
+  account_name:
+  user_name: 
+  password: 
+settings:
+  data_dir: 
+  job_info:
+  uncompress_data: '1'
+  convert_csv: '1'
+  activity_template: /Users/jmoffitt/work/pt_dm/schema/tweet_small.json
+  arrays_to_collapse: hashtags,user_mentions,twitter_entities.urls,gnip.urls,matching_rules,topics
+  header_overrides: actor.location.objectType,actor.location.displayName
+  consolidate_dir:
+  data_span: all
+header_mappings: {}
