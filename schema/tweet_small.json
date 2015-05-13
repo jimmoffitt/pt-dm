@@ -15,7 +15,7 @@
   },
   "verb": "share",
   "postedTime": "2013-11-09T06:12:44.000Z",
-  "body": "RT @originalAuthor: my original post",
+  "body": "RT @originalAuthor: my original post #thisOne",
   "object": {
     "id": "tag:search.twitter.com,2005:399056824369815552",
     "body": "my original post"
@@ -28,12 +28,12 @@
     ],
     "user_mentions": [
       {
-        "screen_name": "StJulienHotel"
+        "screen_name": "originalAuthor"
       }
     ],
     "media": [
       {
-        "expanded_url": "http: \/\/twitter.com\/StJulienHotel\/status\/446756709273317376\/photo\/1",
+        "expanded_url": "http: \/\/twitter.com\/originalAuthor\/status\/446756709273317376\/photo\/1",
         "type": "photo"
       }
     ]
@@ -42,7 +42,7 @@
   "gnip": {
     "matching_rules": [
       {
-        "value": "is: retweetprofile_country_code: ph"
+        "value": "has:media is:retweet original"
       }
     ],
     "urls": [
